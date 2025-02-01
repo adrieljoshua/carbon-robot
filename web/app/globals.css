@@ -2,6 +2,84 @@
 @tailwind components;
 @tailwind utilities;
 
+/* styles/globals.css */
+/* TacticSans */
+@font-face {
+  font-family: 'TacticSans';
+  src: url('/fonts/TacticSans/TacticSans-Bld.woff') format('woff');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TacticSans';
+  src: url('/web/public//fonts/TacticalSans/TacticSans-Blk.woff') format('woff');
+  font-weight: 500; /* Medium */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TacticSans';
+  src: url('/fonts/TacticSans/TacticSans-Thn.woff') format('woff');
+  font-weight: 100; /* Thin */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TacticSans';
+  src: url('/fonts/TacticSans/TacticSans-Reg.woff') format('woff');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
+
+/* Archivo */
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/Archivo/static/Archivo-Bold.ttf') format('truetype');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/Archivo/static/Archivo-Regular.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/Archivo/static/Archivo-Light.ttf') format('truetype');
+  font-weight: 300; /* Light */
+  font-style: normal;
+}
+
+/* Syne */
+@font-face {
+  font-family: 'Syne';
+  src: url('/fonts/Syne/static/Syne-Bold.ttf') format('truetype');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Syne';
+  src: url('/fonts/Syne/static/Syne-Regular.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
+
+/* VT323 */
+@font-face {
+  font-family: 'VT323';
+  src: url('/fonts/VT323/VT323-Regular.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
+
+
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

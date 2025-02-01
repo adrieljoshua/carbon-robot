@@ -12,6 +12,12 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        archivo: ['var(--font-archivo)', 'sans-serif'],
+        vt323: ['var(--font-vt323)', 'monospace'],
+        syne: ['var(--font-syne)', 'sans-serif'],
+        tactical: ['var(--font-tactical-sans)', 'sans-serif'],
+      },
     },
   },
   plugins: [],
