@@ -6,6 +6,7 @@ import Image from "next/image";
 import Logo from "../../public/images/logo.png";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Companies from "@/components/sections/Companies";
 
 
 const LandingPage = () => {
@@ -65,7 +66,7 @@ const LandingPage = () => {
                 <TabsTrigger value="your-company">Your Company</TabsTrigger>
                 <TabsTrigger value="buy-credits">Buy Credits</TabsTrigger>
               </TabsList>
-                <TabsContent value="companies">Make changes to your account here.</TabsContent>
+                <TabsContent value="companies" className="mt-8"><Companies/></TabsContent>
                 <TabsContent value="your-company">Change your password here.</TabsContent>
                 <TabsContent value="buy-credits">Change your email here.</TabsContent>
             </Tabs>
