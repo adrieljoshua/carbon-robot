@@ -1,15 +1,22 @@
-import NeoButton from "../../components/Button";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { ChevronDown, Menu } from "lucide-react";
+import { ChevronDown, Menu, Monitor } from "lucide-react";
 import Image from "next/image";
 import Logo from "../../public/images/logo.png";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Companies from "@/components/sections/Companies";
+import YourCompany from "@/components/sections/YourCompany";
 
 
 const LandingPage = () => {
+
+  const devices = [
+    { id: 1, name: "MacBook Pro", image: "/api/placeholder/200/150" },
+    { id: 2, name: "iPhone 13", image: "/api/placeholder/200/150" },
+    { id: 3, name: "iPad Air", image: "/api/placeholder/200/150" }
+  ];
+  
   return (
     <div className="flex h-screen">
       {/* Mobile Sidebar */}
@@ -36,46 +43,40 @@ const LandingPage = () => {
         {/* Top Bar */}
         <header className="flex items-center justify-between p-4 border-b-2 border-black">
           <Image src={Logo} alt="Logo" width={60} height={60} className="ml-10" />
-          <NeoButton className="rounded-3xl text-xs" name="0x41545.....14535" />
+          <Button className="rounded-3xl text-xs" name="0x41545.....14535" />
         </header>
 
         {/* Main Content Layout */}
         <div className="flex flex-1">
           {/* Sidebar (Desktop) */}
-          <aside className="hidden md:flex w-64 p-4 bg-inherit border-r-2 border-black flex-col gap-x-4 gap-y-6">
-            <NeoButton name="REGISTER COMPANY" className="text-sm font-syne" />
-            
-            {/* Dropdown for Workspace Selection */}
-            <DropdownMenu>
-              <DropdownMenuTrigger name="VIEW DEVICES" className=" text-sm flex justify-center font-syne"/>
-              <DropdownMenuContent>
-                <DropdownMenuItem>Option 1</DropdownMenuItem>
-                <DropdownMenuItem>Option 2</DropdownMenuItem>
-                <DropdownMenuItem>Option 3</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-
-          </aside>
+          <aside className="hidden md:flex w-64 p-4 bg-white border-r-2 border-black flex-col gap-y-6">
+      <Button 
+        className="text-sm text-white font-syne w-full" 
+      >Register Company</Button>
+      
+      
+    </aside>
 
           {/* Content Area */}
-          <main className="flex  flex-col items-center font-tactical text-center">
-            <Tabs defaultValue="account" className="mt-8 px-10 w-[800px]">
-              <TabsList className="">
-                <TabsTrigger value="companies" >Companies</TabsTrigger>
-                <TabsTrigger value="your-company">Your Company</TabsTrigger>
-                <TabsTrigger value="buy-credits">Buy Credits</TabsTrigger>
-              </TabsList>
-                <TabsContent value="companies" className="mt-8"><Companies/></TabsContent>
-                <TabsContent value="your-company">Change your password here.</TabsContent>
-                <TabsContent value="buy-credits">Change your email here.</TabsContent>
-            </Tabs>
+          <main className="flex flex-col items-center font-syne text-center w-full px-6">
+  <Tabs defaultValue="companies" className="mt-8 w-full max-w-[calc(100vw-300px)]"> 
+    <TabsList className="w-full flex justify-center gap-4">
+      <TabsTrigger value="companies">Companies</TabsTrigger>
+      <TabsTrigger value="your-company">Your Company</TabsTrigger>
+      <TabsTrigger value="buy-credits">Buy Credits</TabsTrigger>
+    </TabsList>
+    
+    <TabsContent value="companies" className="mt-8"><Companies/></TabsContent>
+    <TabsContent value="your-company"><YourCompany/></TabsContent>
+    <TabsContent value="buy-credits">Change your email here.</TabsContent>
+  </Tabs>
+</main>
 
-          </main>
         </div>
       </div>
     </div>
   );
 };
+
 
 export default LandingPage;
