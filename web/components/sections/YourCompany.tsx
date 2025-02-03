@@ -3,57 +3,34 @@
 import React, { useState } from "react";
 
 const YourCompany = () => {
-  const [companyName] = useState("ABC Company");
-  const [carbonCredits] = useState(1200);
-  const [creditHistory] = useState([
-    { date: "2025-02-01", amount: "+200" },
-    { date: "2025-01-28", amount: "-50" },
-    { date: "2025-01-20", amount: "+100" },
-    { date: "2025-01-10", amount: "-70" },
-  ]);
-  const [carbonEmissions] = useState("3.5 Tonnes");
-  const [latestTransactions] = useState([
-    { id: "#TXN123", type: "Credit Purchase", amount: "+500" },
-    { id: "#TXN456", type: "Emission Offset", amount: "-300" },
-    { id: "#TXN789", type: "Emission Tax", amount: "-150" },
-  ]);
-  const [ecoScore] = useState(85);
-  
-
+  const [company,setCompany] = useState(CompanyDetails);
   const [showCreditHistory, setShowCreditHistory] = useState(false);
-  const [showTransactionHistory, setShowTransactionHistory] = useState(false);
-  const activeDevices = [
-    { name: "FLIR A615 Thermal Camera", photoUrl: "/images/FLIR-A615-Thermal-Camera.png" }, // Correct path
-    { name: "AeroVironment Quantix Drone", photoUrl: "/images/AeroVironment Quantix Drone.png" }, // Add image path
-    { name: "SenseFly eBee X Drone", photoUrl: "/images/SenseFly eBee X Drone.png" }, // Add image path
-    { name: "Horiba PG-250 Portable Gas Analyzer", photoUrl: "/images/Horiba PG-250 Portable Gas Analyzer.png" }, // Add image path
-    // Add more devices as needed
-  ];
-  const [showCurrentDevices, setShowCurrentDevices] = useState(false);
-  
   
 
   return (
     <div className="w-full font-syne min-h-screen p-10 text-black">
       {/* Title */}
       <h1 className="text-4xl font-bold mb-6 border-b-4 border-black pb-3 tracking-wide">
-        {companyName}
+        {company.name}
       </h1>
 
       {/* Key Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
         <div className="text-xl font-semibold">
           Available Carbon Credits:{" "}
-          <span className="text-3xl font-bold text-green-600">{carbonCredits}</span>
+          <span className="text-3xl font-bold text-black">{company.carbonCredits}</span>
         </div>
         <div className="text-xl font-semibold">
           Carbon Emissions:{" "}
-          <span className="text-3xl font-bold text-red-600">{carbonEmissions}</span>
+          <span className="text-3xl font-bold text-red-600">{company.carbonEmissions}</span>
         </div>
-        <div className="text-xl font-semibold col-span-2">
+        <div className="text-xl font-semibold">
           Eco Score (AI Generated):{" "}
-          <span className="text-3xl font-bold text-blue-600">{ecoScore}%</span>
-          <span className="text-sm text-gray-600 ml-2">(Higher is better)</span>
+          <span className="text-3xl font-bold text-blue-600">{company.ecoscore}%</span>
+        </div>
+        <div className="text-xl font-semibold">
+          Leaderboard Position:{" "}
+          <span className="text-3xl font-bold text-green-600">{company.leaderboard}</span>
         </div>
       </div>
 
@@ -62,50 +39,29 @@ const YourCompany = () => {
         Credit History
         <button
           onClick={() => setShowCreditHistory(true)}
-          className="text-sm font-medium underline text-gray-700 hover:text-black"
+          className="text-sm font-medium text-white bg-black px-4 py-2 rounded hover:bg-black/40"
         >
-          View All
+          View Complete History
         </button>
       </h2>
       <ul className="text-lg mt-3 space-y-2">
-        {creditHistory.slice(0, 2).map((entry, index) => (
+        {company.creditHistory.slice(0, 2).map((entry, index) => (
           <li key={index} className="flex justify-between w-96 px-2 py-1 border-l-4 border-gray-800">
             <span className="font-mono">{entry.date}</span>
             <span className={entry.amount.includes("+") ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
-              {entry.amount}
+              {entry.amount} Credits
             </span>
           </li>
         ))}
       </ul>
 
-      {/* Latest Carbon Transactions */}
-      <h2 className="text-2xl font-semibold mt-8 border-b-4 border-black pb-2 flex justify-between">
-        Latest Carbon Transactions
-        <button
-          onClick={() => setShowTransactionHistory(true)}
-          className="text-sm font-medium underline text-gray-700 hover:text-black"
-        >
-          View All
-        </button>
-      </h2>
-      <ul className="text-lg mt-3 space-y-2">
-        {latestTransactions.slice(0, 2).map((txn, index) => (
-          <li key={index} className="flex justify-between w-96 px-2 py-1 border-l-4 border-gray-800">
-            <span className="font-semibold">{txn.id}</span>
-            <span className="text-gray-700">{txn.type}</span>
-            <span className={txn.amount.includes("+") ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
-              {txn.amount}
-            </span>
-          </li>
-        ))}
-      </ul>
 
       {/* Currently Active Devices */}
       <h2 className="text-2xl font-semibold mt-8 border-b-4 border-black pb-2">
   Currently Active Devices
 </h2>
 <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-  {activeDevices.map((device, index) => (
+  {company.currentActiveDevices.map((device, index) => (
     <div key={index} className="flex items-center space-x-4 border hover:translate-x-1 hover:translate-y-1 transition-all p-4 rounded-lg shadow-md">
       {/* Replace with your device images */}
       <div className="w-20 h-20 flex items-center justify-center overflow-hidden">
@@ -119,34 +75,32 @@ const YourCompany = () => {
 
       {/* Modals */}
       {showCreditHistory && (
-        <Modal title="Full Credit History" onClose={() => setShowCreditHistory(false)}>
-          {creditHistory.map((entry, index) => (
-            <li key={index} className="flex justify-between px-4 py-2 border-b border-gray-300">
-              <span className="font-mono">{entry.date}</span>
-              <span className={entry.amount.includes("+") ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
-                {entry.amount}
-              </span>
-            </li>
-          ))}
-        </Modal>
+    <Modal 
+      title="Full Credit History" 
+      onClose={() => setShowCreditHistory(false)} 
+      className="w-[800px] max-w-4xl"
+    >
+      <ul className="w-full">
+        {company.creditHistory.map((entry, index) => (
+          <li 
+            key={index} 
+            className="grid grid-cols-5 text-center px-4 py-2 border-b border-gray-300"
+          >
+            <span className="text-gray-400 font-mono">{entry.id}</span>
+            <span className="font-mono">{entry.date}</span>
+            <span className={entry.amount.includes("+") ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
+              {entry.amount}
+            </span>
+            <span className="text-gray-500">{entry.type}</span>
+            <span className="text-gray-500">{entry.otherParty}</span>
+          </li>
+        ))}
+      </ul>
+    </Modal>
       )}
 
-      {showTransactionHistory && (
-        <Modal title="Full Transaction History" onClose={() => setShowTransactionHistory(false)}>
-          {latestTransactions.map((txn, index) => (
-            <li key={index} className="flex justify-between px-4 py-2 border-b border-gray-300">
-              <span className="font-semibold">{txn.id}</span>
-              <span className="text-gray-700">{txn.type}</span>
-              <span className={txn.amount.includes("+") ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
-                {txn.amount}
-              </span>
-            </li>
-          ))}
-        </Modal>
-      )}
-
-      {showCurrentDevices && (
-        <Modal title="Currently Active Devices" onClose={() => setShowCurrentDevices(false)}>
+      {/* {showDevice && (
+        <Modal title="Currently Active Devices" onClose={() => setDevice(false)}>
           {activeDevices.map((device, index) => (
             <li key={index} className="flex justify-between px-4 py-2 border-b border-gray-300">
               <span className="font-semibold">{device.name}</span>
@@ -154,17 +108,17 @@ const YourCompany = () => {
             </li>
           ))}
         </Modal>
-      )}
+      )} */}
     </div>
     
   );
 };
 
 // Modal Component
-const Modal = ({ title, children, onClose }) => {
+const Modal = ({ title, children, onClose, className = "" }) => {
   return (
-    <div className="fixed font-syne inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-xl w-96 max-h-[70vh] overflow-auto">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 font-syne">
+      <div className={`bg-white p-6 rounded-lg flex flex-col items-center shadow-xl max-h-[70vh] overflow-auto ${className}`}>
         <h2 className="text-xl font-bold border-b pb-2">{title}</h2>
         <ul className="mt-4">{children}</ul>
         <button
@@ -177,5 +131,26 @@ const Modal = ({ title, children, onClose }) => {
     </div>
   );
 };
+
+const CompanyDetails = {
+  name: "ABC Company",
+  ecoscore: 74,
+  leaderboard: 155,
+  carbonCredits: 40,
+  carbonEmissions: "34.5 Tonnes",
+  creditHistory: [
+    { date: "2025-02-01", amount: "+12", type: "Credit Purchase", id: "#TXN123",otherParty: "XYZ Company" },
+    { date: "2024-08-28", amount: "-15", type: "Emission Offset", id: "#TXN456",otherParty: "SmartTech Solutions" },
+    { date: "2024-01-20", amount: "+24", type: "Credit Purchase", id: "#TXN789",otherParty: "EcoTech Innovations" },
+    { date: "2023-06-10", amount: "-5", type: "Emission Offset", id: "#TXN101",otherParty: "GreenTech Inc" },
+    { date: "2022-12-25", amount: "-15", type: "Emission Offset", id: "#TXN113",otherParty: "GreenTech Inc" },
+  ],
+  currentActiveDevices: [
+    { name: "FLIR A615 Thermal Camera", photoUrl: "/images/FLIR-A615-Thermal-Camera.png", id: "DEV-486", count: 2 ,location: "Warehouse 1" },
+    { name: "AeroVironment Quantix Drone", photoUrl: "/images/AeroVironment Quantix Drone.png",id: "DEV-454", count: 1, location: "Warehouse 2" },
+    { name: "SenseFly eBee X Drone", photoUrl: "/images/SenseFly eBee X Drone.png", id: "DEV-123", count: 3, location: "Warehouse 1" },
+    { name: "Horiba PG-250 Portable Gas Analyzer", photoUrl: "/images/Horiba PG-250 Portable Gas Analyzer.png", id: "DEV-789", count: 1, location: "Warehouse 3" },
+  ]
+}
 
 export default YourCompany;

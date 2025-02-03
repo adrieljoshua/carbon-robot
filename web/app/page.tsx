@@ -11,10 +11,10 @@ export default function Home() {
     }}>
       <div className="text-center font-tactical mt-16">
       <h1 className="text-7xl font-extrabold mb-4">Carbon-Robot</h1>
-      <p className=" text-gray-300 wrap mb-12">Smart Automation for Carbon Credit Management</p>
+      <p className=" text-gray-400 font-syne font-semibold wrap mb-12">Smart Automation for Carbon Credit Management</p>
       </div>
       <Link href="/landing-page">
-      <Button name="GET STARTED" className=""/>
+      <Button name="GET STARTED"/>
 
       </Link>
     </div>
