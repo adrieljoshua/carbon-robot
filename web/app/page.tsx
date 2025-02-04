@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Button from "../components/NeoButton";
+import Button from "../components/user-defined/NeoButton";
 
 export default function Home() {
   return (
@@ -13,7 +13,7 @@ export default function Home() {
       <h1 className="text-7xl font-extrabold mb-4">Carbon-Robot</h1>
       <p className=" text-gray-400 font-syne font-semibold wrap mb-12">Smart Automation for Carbon Credit Management</p>
       </div>
-      <Link href="/landing-page">
+      <Link href="/dashboard">
       <Button name="GET STARTED"/>
 
       </Link>

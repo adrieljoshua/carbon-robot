@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import Modal from "../user-defined/Modal";
 
 const YourCompany = () => {
   const [company,setCompany] = useState(CompanyDetails);
   const [showCreditHistory, setShowCreditHistory] = useState(false);
-  
+  const [selectedDevice, setSelectedDevice] = useState(null);
 
   return (
     <div className="w-full font-syne min-h-screen p-10 text-black">
@@ -56,22 +57,27 @@ const YourCompany = () => {
       </ul>
 
 
-      {/* Currently Active Devices */}
       <h2 className="text-2xl font-semibold mt-8 border-b-4 border-black pb-2">
-  Currently Active Devices
-</h2>
-<div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-  {company.currentActiveDevices.map((device, index) => (
-    <div key={index} className="flex items-center space-x-4 border hover:translate-x-1 hover:translate-y-1 transition-all p-4 rounded-lg shadow-md">
-      {/* Replace with your device images */}
-      <div className="w-20 h-20 flex items-center justify-center overflow-hidden">
-        {/* Example: Replace with actual device images */}
-        <img src={device.photoUrl} alt={device.name} className="w-full h-full object-contain" />
+        Currently Active Devices
+      </h2>
+      <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {company.currentActiveDevices.map((device, index) => (
+          <div 
+            key={index} 
+            onClick={() => setSelectedDevice(device)}
+            className="flex cursor-pointer items-center space-x-4 border hover:translate-x-1 hover:translate-y-1 transition-all p-4 rounded-lg shadow-md"
+          >
+            <div className="w-20 h-20 flex items-center justify-center overflow-hidden">
+              <img 
+                src={device.photoUrl} 
+                alt={device.name} 
+                className="w-full h-full object-contain" 
+              />
+            </div>
+            <h3 className="text-lg font-medium text-gray-800">{device.name}</h3>
+          </div>
+        ))}
       </div>
-      <h3 className="text-lg font-medium text-gray-800">{device.name}</h3>
-    </div>
-  ))}
-</div>
 
       {/* Modals */}
       {showCreditHistory && (
@@ -99,38 +105,44 @@ const YourCompany = () => {
     </Modal>
       )}
 
-      {/* {showDevice && (
-        <Modal title="Currently Active Devices" onClose={() => setDevice(false)}>
-          {activeDevices.map((device, index) => (
-            <li key={index} className="flex justify-between px-4 py-2 border-b border-gray-300">
-              <span className="font-semibold">{device.name}</span>
-              <span className="text-gray-700">{device.photoUrl}</span>
-            </li>
-          ))}
+      {/* Device Details Modal */}
+      {selectedDevice && (
+        <Modal 
+          title="Device Details" 
+          onClose={() => setSelectedDevice(null)} 
+          className="w-[500px] no-scrollbar overflow-y-auto"
+        >
+          <div className="flex flex-col items-center no-scrollbar overflow-y-auto">
+            <img 
+              src={selectedDevice.photoUrl} 
+              alt={selectedDevice.name} 
+              className="w-64 h-64 object-contain border-2 border-gray-200 mb-4" 
+            />
+            <div className="w-full space-y-3">
+              <div className="grid grid-cols-2 gap-2">
+                <span className="font-semibold">Device Name:</span>
+                <span>{selectedDevice.name}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <span className="font-semibold">Device ID:</span>
+                <span>{selectedDevice.id}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <span className="font-semibold">Location:</span>
+                <span>{selectedDevice.location}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <span className="font-semibold">Count:</span>
+                <span>{selectedDevice.count}</span>
+              </div>
+            </div>
+          </div>
         </Modal>
-      )} */}
-    </div>
-    
+      )}
+    </div>    
   );
 };
 
-// Modal Component
-const Modal = ({ title, children, onClose, className = "" }) => {
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 font-syne">
-      <div className={`bg-white p-6 rounded-lg flex flex-col items-center shadow-xl max-h-[70vh] overflow-auto ${className}`}>
-        <h2 className="text-xl font-bold border-b pb-2">{title}</h2>
-        <ul className="mt-4">{children}</ul>
-        <button
-          onClick={onClose}
-          className="mt-4 bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  );
-};
 
 const CompanyDetails = {
   name: "ABC Company",

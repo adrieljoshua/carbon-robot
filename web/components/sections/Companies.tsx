@@ -1,6 +1,6 @@
 'use client'
 import { useState } from "react";
-import CompanyCard from "../CompanyCard";
+import CompanyCard from "../user-defined/CompanyCard";
 import { FaBriefcase, FaBuilding, FaBusinessTime, FaChartLine, FaClipboard, FaHandshake, FaIndustry, FaMoneyBillWave, FaUniversity, FaUsers } from "react-icons/fa";
 
 const Companies = () => {
@@ -30,7 +30,7 @@ const companiesList = [{
                       name: "EcoTech Solutions",
                       carbonCredits: 25,
                       leaderboardRank: 12,
-                      prevLeaderboardRank: 10,
+                      prevLeaderboardRank: 13,
                     },
                     {
                       id: 3,
