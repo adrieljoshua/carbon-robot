@@ -32,7 +32,7 @@ function DeviceList({ onClose }) {
             key={device.id} 
             onClick={() => handleDeviceSelect(device)}
             className={`flex cursor-pointer justify-between items-center gap-x-9 border hover:translate-x-1 hover:translate-y-1 transition-all p-4 rounded-lg shadow-md mb-4 
-              ${selectedDevice?.id === device.id ? 'border-2 border-blue-500' : ''}`}
+              ${selectedDevice?.id === device.id ? 'border-4 border-black' : ''}`}
           >
             {/* Device Image */}
             <div className="w-10 h-10 flex items-center justify-center overflow-hidden">

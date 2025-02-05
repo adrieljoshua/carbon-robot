@@ -2,15 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import Modal from "../user-defined/Modal";
-import { Context, FormContext } from "@/context/Context";
+import { Context } from "@/context/Context";
 import { useContext } from "react";
-import { CheckCircle, PlusCircleIcon, PlusIcon } from "lucide-react";
+import { CheckCircle, PlusCircleIcon, PlusIcon, Scan, ScanIcon, ScanSearchIcon } from "lucide-react";
 import DeviceList from "../user-defined/DeviceList";
 import { Button } from "../ui/button";
+import EmissionScanTerminal from "./Terminal";
 
 
-const YourCompany = (companyName: string) => {
-  // const { formData } = useContext(FormContext);
+const YourCompany = () => {
+  // const { formData } = useContext(Context);
   const {  selectedDeviceData } = useContext(Context);
   const formData = { companyName: "ABC Company", location: "T Nagar, Chennai, India" };  //Comment this line after integrating with the actual data
   const [company,setCompany] = useState(CompanyDetails);
@@ -18,6 +19,8 @@ const YourCompany = (companyName: string) => {
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [addDevice, setAddDevice] = useState(false);
   const [configureDevice, setConfigureDevice] = useState(false);
+  const [showTerminal, setShowTerminal] = useState(false);
+
 
   useEffect(() => {
     if (selectedDeviceData) {
@@ -37,22 +40,18 @@ const YourCompany = (companyName: string) => {
   console.log("Updated Active Devices: (Current)", company.currentActiveDevices);
 
 
-  function handlePrivateKeySubmission(): void {   //Handle the private key validation logic here
+  function handlePrivateKeySubmission(): void {
+    if (!selectedDevice) return; // Prevent errors if selectedDevice is null
     setCompany(prevCompany => ({
       ...prevCompany,
-      currentActiveDevices: prevCompany.currentActiveDevices.map(device => {
-        if (device.id === selectedDevice.id) {
-          return {
-            ...device,
-            state: "Configured"
-          }
-        }
-        return device;
-      })
+      currentActiveDevices: prevCompany.currentActiveDevices.map(device =>
+        device.id === selectedDevice.id ? { ...device, state: "Configured" } : device
+      )
     }));
     setConfigureDevice(false);
     setSelectedDevice(null);
-}
+  }
+
 
   return (
     <div className="w-full font-syne min-h-screen p-10 text-black">
@@ -126,8 +125,10 @@ const YourCompany = (companyName: string) => {
             {company.currentActiveDevices.map((device, index) => (
               <div 
                 key={index} 
-                onClick={() => setSelectedDevice(device)}
-                className="flex cursor-pointer items-center space-x-4 border hover:translate-x-1 hover:translate-y-1 transition-all p-4 rounded-lg shadow-md"
+                onClick={() => setSelectedDevice(device)} 
+                className={`flex cursor-pointer items-center space-x-4 border transition-all p-4 rounded-lg shadow-md hover:translate-x-1 hover:translate-y-1
+                  ${device.state === "Unconfigured" ? "bg-yellow-200 border-yellow-600 hover:bg-yellow-300" : "bg-green-200 border-green-600 hover:bg-green-300"}
+                `}
               >
                 <div className="w-20 h-20 flex items-center justify-center overflow-hidden">
                   <img 
@@ -229,6 +230,17 @@ const YourCompany = (companyName: string) => {
         </Modal>
           )}  
 
+        {/* Start Scan Button */}
+        {company.currentActiveDevices.some(device => device.state === "Configured") && (
+          <div className="flex justify-center mt-10">
+            <Button className="bg-black text-white" onClick={() => setShowTerminal(true)}>
+              <ScanSearchIcon size={20} className="mr-2"/>
+              <span>START CARBON EMISSION SCAN</span>
+            </Button>
+          </div>
+        )}
+
+        {showTerminal && <EmissionScanTerminal onClose={() => setShowTerminal(false)} />}
         </>
       ) : (
         <div className="flex  justify-center h-screen">
