@@ -11,7 +11,7 @@ const LocationPicker = ({ onLocationSelect }) => {
   const [address, setAddress] = useState('');
   const [loaded, setLoaded] = useState(false);
 
-  const apiKey = process.env.NEXT_PUBLIC_OPENCAGE_API_KEY;
+  const apiKey = "";
   
   const fetchAddress = async (lat, lng) => {
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=${apiKey}`;
@@ -23,7 +23,7 @@ const LocationPicker = ({ onLocationSelect }) => {
         setAddress(newAddress);
         onLocationSelect({ address: newAddress, coordinates: { lat, lng } });
       } else {
-        setAddress('Address not found');
+        setAddress('Address not found Address not found Address not found Address not found');
         onLocationSelect(null);
       }
     } catch (error) {

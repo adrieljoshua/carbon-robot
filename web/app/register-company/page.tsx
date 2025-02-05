@@ -3,22 +3,24 @@ import SideBar from "@/components/user-defined/SideBar";
 import TopBar from "@/components/user-defined/TopBar";
 import LocationPicker from "@/components/user-defined/LocationMarker";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast"
+import { useRouter } from "next/navigation";
+import { FormContext } from "@/context/Context";
 
 const RegisterCompany = () => {
     const { toast } = useToast()
     const [companyName, setCompanyName] = useState("");
     const [location, setLocation] = useState(null);
-    const [showConfirmation, setShowConfirmation] = useState(false);
-    const [form, setForm] = useState({});
-  
+    const { formData, setFormData } = useContext(FormContext);
+    const router = useRouter();
+    
     const handleSubmitClick = (e) => {
       e.preventDefault();
-      const formData = { companyName, location };
-      setForm(formData);
-      toast({ title: "Company Successfully Registered", description: `${companyName}` })
+      setFormData({ companyName, location });
+      toast({ title: "Company Successfully Registered", description: `Company Name: ${companyName}` })
+      router.push("/dashboard");
     };
 
     return (
@@ -35,7 +37,7 @@ const RegisterCompany = () => {
                 <Input id="companyName" type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} className="w-full" />
                 <h2 className="text-2xl font-syne font-semibold mt-4">Select Location</h2>
                 <div className="max-w-md min-w-96"> <LocationPicker onLocationSelect={setLocation} /> </div>
-                {companyName && location && ( <Button type="submit" className="font-syne mt-4" onClick={() => setShowConfirmation(true)}> Register Company </Button> )}
+                {companyName && ( <Button type="submit" className="font-syne mt-4"> Register Company </Button> )}
               </div>
             </form>
           </div>

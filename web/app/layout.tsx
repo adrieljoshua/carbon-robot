@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import {archivo, vt323, syne, tacticalSans} from "./styles/fonts";
 import { Toaster } from "@/components/ui/toaster";
+import { DataProvider } from '../context/Context';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,9 +40,12 @@ export default function RootLayout({
       <body
          className={`${archivo.variable} ${vt323.variable} ${syne.variable} ${tacticalSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <DataProvider>
         {children}
         <Toaster />
+        </DataProvider>
       </body>
     </html>
+    
   );
 }
