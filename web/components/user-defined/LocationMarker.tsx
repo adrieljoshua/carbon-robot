@@ -31,7 +31,6 @@ const LocationPicker = ({ onLocationSelect }) => {
       setAddress('Error fetching address');
       onLocationSelect(null);
     }
-    console.log('Address:', apiKey);
   };
 
   const LocationMarker = () => {
