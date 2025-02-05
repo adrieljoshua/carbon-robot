@@ -12,9 +12,9 @@ import EmissionScanTerminal from "./Terminal";
 
 
 const YourCompany = () => {
-  // const { formData } = useContext(Context);
+  const { formData } = useContext(Context);
   const {  selectedDeviceData } = useContext(Context);
-  const formData = { companyName: "ABC Company", location: "T Nagar, Chennai, India" };  //Comment this line after integrating with the actual data
+  // const formData = { companyName: "ABC Company", location: "T Nagar, Chennai, India" };  //Comment this line after integrating with the actual data
   const [company,setCompany] = useState(CompanyDetails);
   const [showCreditHistory, setShowCreditHistory] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState(null);
@@ -53,7 +53,7 @@ const YourCompany = () => {
           <h1 className="text-4xl font-bold mb-6 border-b-4 border-black pb-3 tracking-wide">
             {formData.companyName}
           </h1>
-
+          <p className="text-lg font-semibold mb-6">{formData.location}</p>
           {/* Key Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
             <div className="text-xl font-semibold">

@@ -7,13 +7,13 @@ import { useContext, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation";
-import { FormContext } from "@/context/Context";
+import { Context } from "@/context/Context";
 
 const RegisterCompany = () => {
     const { toast } = useToast()
     const [companyName, setCompanyName] = useState("");
     const [location, setLocation] = useState(null);
-    const { formData, setFormData } = useContext(FormContext);
+    const { formData, setFormData } = useContext(Context);
     const router = useRouter();
     
     const handleSubmitClick = (e) => {

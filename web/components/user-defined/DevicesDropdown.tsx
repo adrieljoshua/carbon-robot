@@ -1,30 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   DropdownMenu, 
   DropdownMenuTrigger, 
   DropdownMenuContent 
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Monitor } from 'lucide-react';
-
-const devices = [
-  { 
-    name: "FLIR A615 Thermal Camera", 
-    photoUrl: "/images/FLIR-A615-Thermal-Camera.png" 
-  },
-  { 
-    name: "AeroVironment Quantix Drone", 
-    photoUrl: "/images/AeroVironment Quantix Drone.png" 
-  },
-  { 
-    name: "SenseFly eBee X Drone", 
-    photoUrl: "/images/SenseFly eBee X Drone.png"
-  },
-  { 
-    name: "Horiba PG-250 Portable Gas Analyzer", 
-    photoUrl: "/images/Horiba PG-250 Portable Gas Analyzer.png" 
-  }
-];
+import { CheckCircle, Monitor } from 'lucide-react';
+import { devicesList } from './DeviceList';
+import Modal from './Modal';
 
 const DeviceCard = ({ name, photoUrl }) => (
   <div className="flex items-center p-1 bg-white cursor-pointer w-full 
@@ -41,26 +24,60 @@ const DeviceCard = ({ name, photoUrl }) => (
 );
 
 const DeviceDropdown = () => {
+  const [deviceSelected, setDeviceSelected] = useState(null);
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        
-      </DropdownMenuTrigger>
-      <DropdownMenuContent 
-        className="overflow-y-auto 
-        shadow-lg p-2 rounded-lg bg-white" 
-      >
-        <div className="space-y-2">
-          {devices.map((device, index) => (
-            <DeviceCard 
-              key={index}
-              name={device.name}
-              photoUrl={device.photoUrl}
-            />
+    (
+      <div className="flex flex-col font-syne items-center">
+        <div className="gap-0 w-full mb-2">
+          {devicesList.map((device) => (
+            <div 
+              key={device.model} 
+              onClick={() => setDeviceSelected(device)}
+              className={`flex cursor-pointer justify-between items-center gap-x-2 border hover:translate-x-1 hover:translate-y-1 transition-all p-4 rounded-lg shadow-md mb-4 
+                hover:translate-x-1 hover:translate-y-1 transition-all`}
+            >
+              {/* Device Image */}
+              <div className="w-12 h-12 flex items-center justify-center overflow-hidden">
+                <img src={device.photoUrl} alt={device.name} className="w-full h-full object-contain" />
+              </div>
+  
+              {/* Device Name */}
+              <h3 className="text-sm text-wrap font-medium text-gray-800">{device.name}</h3>
+            </div>
           ))}
-        </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          {/* Device Details Modal */}
+          {deviceSelected && (
+            <Modal 
+              title="Device Details" 
+              onClose={() => setDeviceSelected(null)} 
+              className="w-[600px] no-scrollbar overflow-y-auto"
+            >
+              <div className="flex flex-col items-center no-scrollbar overflow-y-auto">
+                <img 
+                  src={deviceSelected.photoUrl} 
+                  alt={deviceSelected.name} 
+                  className="w-64 h-64 object-contain border-2 border-gray-200 mb-4" 
+                />
+                <div className="w-full space-y-3">
+                  <div className="grid grid-cols-2 gap-2">
+                    <span className="font-semibold">Device Name:</span>
+                    <span>{deviceSelected.name}</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <span className="font-semibold">Device Model:</span>
+                    <span>{deviceSelected.model}</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <span className="font-semibold">Device Description:</span>
+                    <span>{deviceSelected.description}</span>
+                  </div>
+                </div>
+              </div>
+            </Modal>
+          )}
+        </div> 
+      </div>
+    )
   );
 };
 

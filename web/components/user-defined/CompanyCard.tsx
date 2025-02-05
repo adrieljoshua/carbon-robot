@@ -12,7 +12,7 @@ interface CompanyCardProps {
 }
 
 
-const CompanyCard: React.FC<CompanyCardProps> = ({ company, logo: Logo }) => {
+const CompanyCard: React.FC<CompanyCardProps> = ({ company, logo: Logo, onViewCompany }) => {
   const isLeaderboardImproved = company.leaderboardRank < company.prevLeaderboardRank;
 
   return (
@@ -48,7 +48,7 @@ const CompanyCard: React.FC<CompanyCardProps> = ({ company, logo: Logo }) => {
       <div className="border-t border-black mt-4 mb-2"></div>
 
       {/* View Company Button */}
-      <div className="flex justify-end gap-x-3 items-center cursor-pointer">
+      <div className="flex justify-end gap-x-3 items-center cursor-pointer" onClick={onViewCompany}>
         <span className="text-sm font-syne">View Company</span>
         <ArrowRight />
       </div>

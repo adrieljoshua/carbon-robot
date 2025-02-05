@@ -11,7 +11,7 @@ const LocationPicker = ({ onLocationSelect }) => {
   const [address, setAddress] = useState('');
   const [loaded, setLoaded] = useState(false);
 
-  const apiKey = "";
+  const apiKey = process.env.NEXT_PUBLIC_OPENCAGE_API_KEY;
   
   const fetchAddress = async (lat, lng) => {
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=${apiKey}`;

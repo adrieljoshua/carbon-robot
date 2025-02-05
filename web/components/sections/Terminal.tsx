@@ -44,8 +44,8 @@ const EmissionScanTerminal = ({ onClose }) => {
   }, [scanStarted]);  // Only run the effect when scanStarted changes
 
   return (
-    <div className={`fixed bottom-10 right-10 bg-black text-green-400 border border-gray-600 rounded-lg shadow-lg w-96 ${minimized ? "h-10" : "h-64"}`}>
-      <div className="flex justify-between items-center p-2 bg-gray-900 text-white cursor-pointer">
+    <div  className={`fixed bottom-10 right-10 bg-black text-green-400 border border-gray-600 rounded-xl shadow-2xl w-96 ${minimized ? "h-10" : "h-64"}`}>
+      <div className="flex justify-between items-center p-2 rounded-xl bg-gray-900 text-white cursor-pointer">
         <span>Emission Scan Report</span>
         <div className="flex space-x-2">
           <button onClick={() => setMinimized(!minimized)}>
@@ -57,7 +57,7 @@ const EmissionScanTerminal = ({ onClose }) => {
         </div>
       </div>
       {!minimized && (
-        <div id="log-container" className="p-2 text-sm h-52 no-scrollbar overflow-y-auto font-mono">
+        <div id="log-container" className="px-2 py-3 text-sm h-52 no-scrollbar overflow-y-auto font-mono">
           {logs.map((log, index) => (
             <div key={index}>{"> " + log}</div>
           ))}
