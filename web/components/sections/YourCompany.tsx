@@ -1,18 +1,58 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "../user-defined/Modal";
-import { FormContext } from "@/context/Context";
+import { Context, FormContext } from "@/context/Context";
 import { useContext } from "react";
+import { CheckCircle, PlusCircleIcon, PlusIcon } from "lucide-react";
+import DeviceList from "../user-defined/DeviceList";
+import { Button } from "../ui/button";
 
 
 const YourCompany = (companyName: string) => {
   // const { formData } = useContext(FormContext);
-  const formData = { companyName: "ABC Company", location: "T Nagar, Chennai, India" };
+  const {  selectedDeviceData } = useContext(Context);
+  const formData = { companyName: "ABC Company", location: "T Nagar, Chennai, India" };  //Comment this line after integrating with the actual data
   const [company,setCompany] = useState(CompanyDetails);
   const [showCreditHistory, setShowCreditHistory] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState(null);
+  const [addDevice, setAddDevice] = useState(false);
+  const [configureDevice, setConfigureDevice] = useState(false);
 
+  useEffect(() => {
+    if (selectedDeviceData) {
+      setCompany(prevCompany => ({
+        ...prevCompany,
+        currentActiveDevices: [
+          ...prevCompany.currentActiveDevices,
+          {
+            ...selectedDeviceData
+          }
+        ]
+      }));
+    }
+    // console.log("Selected Device Data:", selectedDeviceData);
+  }, [selectedDeviceData]);
+  
+  console.log("Updated Active Devices: (Current)", company.currentActiveDevices);
+
+
+  function handlePrivateKeySubmission(): void {   //Handle the private key validation logic here
+    setCompany(prevCompany => ({
+      ...prevCompany,
+      currentActiveDevices: prevCompany.currentActiveDevices.map(device => {
+        if (device.id === selectedDevice.id) {
+          return {
+            ...device,
+            state: "Configured"
+          }
+        }
+        return device;
+      })
+    }));
+    setConfigureDevice(false);
+    setSelectedDevice(null);
+}
 
   return (
     <div className="w-full font-syne min-h-screen p-10 text-black">
@@ -73,6 +113,16 @@ const YourCompany = (companyName: string) => {
             Currently Active Devices
           </h2>
           <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div 
+                onClick={() => setAddDevice(true)}
+                className="flex cursor-pointer items-center space-x-4 border hover:translate-x-1 hover:translate-y-1 transition-all p-4 rounded-lg shadow-md"
+              >
+                  <div className="w-full h-full flex items-center p-4 justify-evenly overflow-hidden">
+                    <PlusIcon size={35} />
+                    <h3 className="text-lg font-medium text-gray-800">Add Device</h3>
+              </div>
+            </div> 
+
             {company.currentActiveDevices.map((device, index) => (
               <div 
                 key={index} 
@@ -117,6 +167,16 @@ const YourCompany = (companyName: string) => {
             </Modal>
           )}
 
+        {addDevice && (
+        <Modal 
+          title="Select Device" 
+          onClose={() => setAddDevice(false)} 
+          className="w-[500px] no-scrollbar overflow-y-auto"
+        >
+          <DeviceList onClose={() => setAddDevice(false)} />
+        </Modal>
+          )}    
+
           {/* Device Details Modal */}
           {selectedDevice && (
             <Modal 
@@ -140,17 +200,35 @@ const YourCompany = (companyName: string) => {
                     <span>{selectedDevice.id}</span>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
-                    <span className="font-semibold">Location:</span>
-                    <span>{selectedDevice.location}</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <span className="font-semibold">Count:</span>
-                    <span>{selectedDevice.count}</span>
+                    <span className="font-semibold">Status</span>
+                    {selectedDevice.state === "Unconfigured" ? (
+                    <div className="flex items-center space-x-4">
+                      <span>{selectedDevice.state}</span>
+                      <Button className="text-xs p-2 bg-gray-950" onClick={()=>setConfigureDevice(true)}>Configure</Button>
+                    </div>):(
+                      <div className="flex items-center space-x-4">
+                      <span>{selectedDevice.state}</span>
+                      <CheckCircle size={20} className="text-green-400"/>
+                    </div>
+                    )}
                   </div>
                 </div>
               </div>
             </Modal>
           )}
+          {configureDevice && (
+        <Modal 
+          title="Configure Device" 
+          onClose={() => setAddDevice(false)} 
+          className="w-[500px] no-scrollbar overflow-y-auto"
+        >
+          <div className="flex items-center no-scrollbar overflow-y-auto">
+            <input type="text" placeholder="Enter device private key to configure" className="w-full"/>
+            <Button className="bg-green-600" onClick={()=>handlePrivateKeySubmission()}>Configure</Button>
+          </div>
+        </Modal>
+          )}  
+
         </>
       ) : (
         <div className="flex  justify-center h-screen">
@@ -164,9 +242,9 @@ const YourCompany = (companyName: string) => {
 
 const CompanyDetails = {
   name: "ABC Company",
-  ecoscore: "",
-  leaderboard: "",
-  carbonCredits: "-",
+  ecoscore: "-",
+  leaderboard: "-",
+  carbonCredits: 0,
   carbonEmissions: "-",
   creditHistory: [
     // { date: "2025-02-01", amount: "+12", type: "Credit Purchase", id: "#TXN123",otherParty: "XYZ Company" },
@@ -176,10 +254,7 @@ const CompanyDetails = {
     // { date: "2022-12-25", amount: "-15", type: "Emission Offset", id: "#TXN113",otherParty: "GreenTech Inc" },
   ],
   currentActiveDevices: [
-    // { name: "FLIR A615 Thermal Camera", photoUrl: "/images/FLIR-A615-Thermal-Camera.png", id: "DEV-486", count: 2 ,location: "Warehouse 1" },
-    // { name: "AeroVironment Quantix Drone", photoUrl: "/images/AeroVironment Quantix Drone.png",id: "DEV-454", count: 1, location: "Warehouse 2" },
-    // { name: "SenseFly eBee X Drone", photoUrl: "/images/SenseFly eBee X Drone.png", id: "DEV-123", count: 3, location: "Warehouse 1" },
-    // { name: "Horiba PG-250 Portable Gas Analyzer", photoUrl: "/images/Horiba PG-250 Portable Gas Analyzer.png", id: "DEV-789", count: 1, location: "Warehouse 3" },
+
   ]
 }
 
