@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { CheckCircle, PlusCircleIcon, PlusIcon, Scan, ScanIcon, ScanSearchIcon } from "lucide-react";
 import DeviceList from "../user-defined/DeviceList";
 import { Button } from "../ui/button";
+import { v4 as uuidv4 } from 'uuid';
 import EmissionScanTerminal from "./Terminal";
 
 
@@ -24,29 +25,21 @@ const YourCompany = () => {
 
   useEffect(() => {
     if (selectedDeviceData) {
-      setCompany(prevCompany => ({
+      const newDevice = { ...selectedDeviceData, id: crypto.randomUUID() }; // Assign unique ID
+      setCompany((prevCompany) => ({
         ...prevCompany,
-        currentActiveDevices: [
-          ...prevCompany.currentActiveDevices,
-          {
-            ...selectedDeviceData
-          }
-        ]
+        currentActiveDevices: [...prevCompany.currentActiveDevices, newDevice],
       }));
     }
-    // console.log("Selected Device Data:", selectedDeviceData);
   }, [selectedDeviceData]);
-  
-  console.log("Updated Active Devices: (Current)", company.currentActiveDevices);
-
 
   function handlePrivateKeySubmission(): void {
-    if (!selectedDevice) return; // Prevent errors if selectedDevice is null
-    setCompany(prevCompany => ({
+    if (!selectedDevice) return;
+    setCompany((prevCompany) => ({
       ...prevCompany,
-      currentActiveDevices: prevCompany.currentActiveDevices.map(device =>
+      currentActiveDevices: prevCompany.currentActiveDevices.map((device) =>
         device.id === selectedDevice.id ? { ...device, state: "Configured" } : device
-      )
+      ),
     }));
     setConfigureDevice(false);
     setSelectedDevice(null);
@@ -197,9 +190,14 @@ const YourCompany = () => {
                     <span>{selectedDevice.name}</span>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
-                    <span className="font-semibold">Device ID:</span>
+                    <span className="font-semibold">Device Model:</span>
+                    <span>{selectedDevice.model}</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <span className="font-semibold">Unique Device ID:</span>
                     <span>{selectedDevice.id}</span>
                   </div>
+
                   <div className="grid grid-cols-2 gap-2">
                     <span className="font-semibold">Status</span>
                     {selectedDevice.state === "Unconfigured" ? (
@@ -231,14 +229,29 @@ const YourCompany = () => {
           )}  
 
         {/* Start Scan Button */}
-        {company.currentActiveDevices.some(device => device.state === "Configured") && (
-          <div className="flex justify-center mt-10">
-            <Button className="bg-black text-white" onClick={() => setShowTerminal(true)}>
-              <ScanSearchIcon size={20} className="mr-2"/>
-              <span>START CARBON EMISSION SCAN</span>
-            </Button>
-          </div>
-        )}
+          {company.currentActiveDevices.some(device => device.state === "Configured") && (
+            <div className="flex justify-center mt-10">
+              <Button className="bg-black text-white" onClick={() => setShowTerminal(true)}>
+                <ScanSearchIcon size={20} className="mr-2"/>
+                <span>START CARBON EMISSION SCAN</span>
+              </Button>
+            </div>
+          )}
+
+          {company.currentActiveDevices.length > 0 && !company.currentActiveDevices.some(device => device.state === "Configured") && 
+           (
+            <div className="flex flex-col items-center mt-10">
+              <Button 
+                className="bg-black text-white opacity-50 cursor-not-allowed" 
+                onClick={() => setShowTerminal(true)} 
+                disabled
+              >
+                <ScanSearchIcon size={20} className="mr-2"/>
+                <span>START CARBON EMISSION SCAN</span>
+              </Button>
+              <p className="text-sm text-red-500 mt-2">Please configure devices to initiate scan.</p>
+            </div>
+          )}
 
         {showTerminal && <EmissionScanTerminal onClose={() => setShowTerminal(false)} />}
         </>
