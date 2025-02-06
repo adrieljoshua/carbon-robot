@@ -41,7 +41,7 @@ const SideBar = () => {
             <Button className=" text-white text-sm font-syne w-full" onClick={handleRegisterCompany}>REGISTER COMPANY</Button>
             <Button className=" text-black text-sm hover:bg-gray-100 
             font-syne bg-white border-2 border-black w-full" onClick={()=>setShowLeaderboard(true)}>ECOLEADERBOARD 🎖️</Button>
-            <div className="flex items-center font-syne gap-x-2 hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer" 
+            <div className="flex items-center font-syne text-sm font-semibold gap-x-2 hover:translate-x-0.5 hover:translate-y-0.5 transition-all cursor-pointer" 
             onClick={()=>handleKeyPress()}><span>VIEW DEVICES </span><ArrowDown size={15}/></div>
             {showDevices && <DeviceDropdown onClose={()=>setShowDevices(false)}  />}
         </aside>

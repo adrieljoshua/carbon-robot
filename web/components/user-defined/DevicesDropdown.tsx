@@ -33,11 +33,14 @@ const DeviceDropdown = () => {
             <div 
               key={device.model} 
               onClick={() => setDeviceSelected(device)}
-              className={`flex cursor-pointer justify-between items-center gap-x-2 border hover:translate-x-1 hover:translate-y-1 transition-all p-4 rounded-lg shadow-md mb-4 
-                hover:translate-x-1 hover:translate-y-1 transition-all`}
+              className={`flex cursor-pointer justify-between items-center gap-x-2 border hover:translate-x-1 hover:translate-y-1 transition-all p-4 rounded-lg mb-4 
+                hover:translate-x-1 hover:translate-y-1 transition-all border-2 border-black bg-white 
+      shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 
+      hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] 
+      active:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-0 active:translate-y-0`}
             >
               {/* Device Image */}
-              <div className="w-12 h-12 flex items-center justify-center overflow-hidden">
+              <div className="w-12 h-12 flex items-center justify-center  overflow-hidden">
                 <img src={device.photoUrl} alt={device.name} className="w-full h-full object-contain" />
               </div>
   

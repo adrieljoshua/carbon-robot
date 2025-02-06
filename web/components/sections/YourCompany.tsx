@@ -21,9 +21,9 @@ const YourCompany = () => {
   const [addDevice, setAddDevice] = useState(false);
   const [configureDevice, setConfigureDevice] = useState(false);
   const [showTerminal, setShowTerminal] = useState(false);
+  const [invalidPrivateKey, setInvalidPrivateKey] = useState(false);
+  const [privateKey, setPrivateKey] = useState("");
  
-   company.name = formData.companyName;
-    company.location = formData.location.address;
 
   useEffect(() => {
     if (selectedDeviceData) {
@@ -35,17 +35,39 @@ const YourCompany = () => {
     }
   }, [selectedDeviceData]);
 
-  function handlePrivateKeySubmission(): void {
+  function handlePrivateKeySubmission(value: string): void {
     if (!selectedDevice) return;
-    setCompany((prevCompany) => ({
-      ...prevCompany,
-      currentActiveDevices: prevCompany.currentActiveDevices.map((device) =>
-        device.id === selectedDevice.id ? { ...device, state: "Configured" } : device
-      ),
-    }));
-    setConfigureDevice(false);
-    setSelectedDevice(null);
+
+    if (value === "1234") { // Ensure value comparison is correct (string)
+      setCompany((prevCompany) => {
+        if (!prevCompany) return prevCompany; // Ensure prevCompany exists
+
+        return {
+          ...prevCompany,
+          currentActiveDevices: prevCompany.currentActiveDevices.map((device) =>
+            device.id === selectedDevice.id ? { ...device, state: "Configured" } : device
+          ),
+        };
+      });
+      setConfigureDevice(false);
+      setSelectedDevice(null);
+      setInvalidPrivateKey(false);
+      setPrivateKey("");
+    } else {
+      setInvalidPrivateKey(true);
+    }
   }
+  
+
+  useEffect(() => {
+    if (formData.companyName) {
+      setCompany((prevCompany) => ({
+        ...prevCompany,
+        name: formData.companyName,
+        location: formData.location.address,
+      }));
+    }
+  }, [formData]);
 
 
   return (
@@ -221,12 +243,15 @@ const YourCompany = () => {
           {configureDevice && (
         <Modal 
           title="Configure Device" 
-          onClose={() => setAddDevice(false)} 
+          onClose={() => setConfigureDevice(false)} 
           className="w-[500px] no-scrollbar overflow-y-auto"
         >
-          <div className="flex items-center no-scrollbar overflow-y-auto">
-            <input type="text" placeholder="Enter device private key to configure" className="w-full"/>
-            <Button className="bg-green-600" onClick={()=>handlePrivateKeySubmission()}>Configure</Button>
+          <div className="flex items-center gap-6 no-scrollbar overflow-y-auto">
+            <div className="w-full flex flex-col gap-1 items-center">
+              <input type="text" onChange={(e:any)=>setPrivateKey(e.target.value)} placeholder="Enter device private key to configure" className="w-full border-2 border-gray-300 rounded-sm active:border-gray-300 px-4 py-2"/>
+              {invalidPrivateKey && <p className="text-red-500 text-sm">Authentication failed. Enter valid private key.</p>}
+            </div>
+            <Button className="bg-green-600" onClick={() => handlePrivateKeySubmission(privateKey)}>Configure</Button>
           </div>
         </Modal>
           )}  

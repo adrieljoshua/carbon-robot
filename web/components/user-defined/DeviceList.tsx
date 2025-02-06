@@ -9,13 +9,13 @@ export const devicesList = [
   { name: "FLIR A615 Thermal Camera",
     photoUrl: "/images/FLIR-A615-Thermal-Camera.png", 
     model: "DEV-1",state: "Unconfigured",
-    decription: "The FLIR A615 is a compact thermal imaging camera designed for condition monitoring, process control, quality assurance, and fire prevention. It features a 640 x 480 pixel microbolometer that detects temperature differences as small as 50 mK, ensuring accuracy at longer distances. The camera offers 16-bit temperature linear output, allowing integration with third-party software. It can stream full-frame 16-bit images at 50 Hz, or up to 200 Hz in windowed mode, accommodating high-speed processes." 
+    description: "The FLIR A615 is a compact thermal imaging camera designed for condition monitoring, process control, quality assurance, and fire prevention. It features a 640 x 480 pixel microbolometer that detects temperature differences as small as 50 mK, ensuring accuracy at longer distances. The camera offers 16-bit temperature linear output, allowing integration with third-party software. It can stream full-frame 16-bit images at 50 Hz, or up to 200 Hz in windowed mode, accommodating high-speed processes." 
   },
   { name: "AeroVironment Quantix Drone",
     photoUrl: "/images/AeroVironment Quantix Drone.png",
     model: "DEV-2", 
     state:"Unconfigured",
-    decription: "The AeroVironment Quantix is a hybrid vertical takeoff and landing (VTOL) drone designed for commercial applications. It combines the vertical takeoff and landing capabilities of a quadcopter with the speed and endurance of a fixed-wing aircraft. This design allows for efficient data collection over large areas, making it suitable for agriculture, construction, and environmental monitoring.",
+    description: "The AeroVironment Quantix is a hybrid vertical takeoff and landing (VTOL) drone designed for commercial applications. It combines the vertical takeoff and landing capabilities of a quadcopter with the speed and endurance of a fixed-wing aircraft. This design allows for efficient data collection over large areas, making it suitable for agriculture, construction, and environmental monitoring.",
   },
   { name: "SenseFly eBee X Drone",
     photoUrl: "/images/SenseFly eBee X Drone.png", 
