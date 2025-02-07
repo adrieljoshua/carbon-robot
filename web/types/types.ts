@@ -12,10 +12,17 @@ export interface CompanyProps {
   carbonEmissions: number | null;
   ecoscore: number | null;
   creditHistory: CreditTransaction[];
+  scanHistory: ScanReport[];
   currentActiveDevices: Device[];
 }
 
 export interface CompanyListProps extends CompanyProps {
+}
+
+export interface ScanReport {
+  hash: string;
+  date: string;
+  emissionRate: number;
 }
 
 export interface Device {

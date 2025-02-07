@@ -11,13 +11,19 @@ export const companiesList: CompanyListProps[] = [
       carbonEmissions: 1200,
       ecoscore: 85,
       creditHistory: [
-          { hash: "d2b2e23c5a9c17f9b3d6c3d5e6a2f4c8f99a7b8c5d6e5a3b8c7d9f2a6b5c3d1e", date: "2025-02-01", amount: "+12", type: "Credit Purchase", otherParty: "XYZ Company" },
-          { hash: "e7d9c2a3b5c6d7e8f9a1b2c3d4e5f6a7b8c9d1e2f3a4b5c6d7e8f9a1b2c3d4e5", date: "2024-08-28", amount: "-15", type: "Emission Offset", otherParty: "SmartTech Solutions" },
+          { hash: "f1e2d3c4b5a69788", date: "2025-02-01", amount: "+12", type: "Credit Purchase", otherParty: "XYZ Company" },
+          { hash: "abcdefabcdefabcd", date: "2024-08-28", amount: "-15", type: "Emission Offset", otherParty: "SmartTech Solutions" },
       ],
       currentActiveDevices: [
           { id: "1", name: "FLIR A615 Thermal Camera", photoUrl: "/images/FLIR-A615-Thermal-Camera.png", model: "DEV-1", state: "Unconfigured", description: "Thermal imaging camera for industrial applications" },
           { id: "2", name: "AeroVironment Quantix Drone", photoUrl: "/images/AeroVironment Quantix Drone.png", model: "DEV-2", state: "Unconfigured", description: "High-performance drone for aerial surveys" },
       ],
+      scanHistory: [
+        { hash: "f1e2d3c4b5a69788", date: "2025-02-01", emissionRate: 12 },
+        { hash: "abcdefabcdefabcd", date: "2024-08-28", emissionRate: 15 },
+        { hash: "dcg2335fdfsasfgg", date: "2023-06-28", emissionRate: 20 },
+        { hash: "dcg23asdffsdsdfg", date: "2022-08-28", emissionRate: 21 },
+      ]
   },
   {
     id: 2,
@@ -29,13 +35,19 @@ export const companiesList: CompanyListProps[] = [
     carbonEmissions: 800,
     ecoscore: 92,
     creditHistory: [
-      { hash: "f1e2d3c4b5a6978876543210abcdef1234567890abcdef1234567890abcdef12", date: "2025-01-15", amount: "+30", type: "Credit Purchase", otherParty: "TechGlobal Solutions" },
-      { hash: "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a1b2c3d4e5f6a7b8c9d0e1f2a3b", date: "2024-12-02", amount: "-25", type: "Emission Offset", otherParty: "EcoFuture Tech" },
+      { hash: "f1e2d3c4b5a69788", date: "2025-01-15", amount: "+30", type: "Credit Purchase", otherParty: "TechGlobal Solutions" },
+      { hash: "abcdefabcdefabcd", date: "2024-12-02", amount: "-25", type: "Emission Offset", otherParty: "EcoFuture Tech" },
     ],
     currentActiveDevices: [
       { id: "3", name: "SenseFly eBee X Drone", photoUrl: "/images/SenseFly eBee X Drone.png", model: "DEV-3", state: "Unconfigured", description: "Advanced drone for precision agriculture" },
       { id: "4", name: "Horiba PG-250 Portable Gas Analyzer", photoUrl: "/images/Horiba PG-250 Portable Gas Analyzer.png", model: "DEV-4", state: "Unconfigured", description: "Portable gas analyzer for emissions monitoring" },
-    ]
+    ],
+    scanHistory: [
+        { hash: "f1e2d3c4b5a69788", date: "2025-02-01", emissionRate: 12 },
+        { hash: "abcdefabcdefabcd", date: "2024-08-28", emissionRate: 15 },
+        { hash: "dcg2335fdfsasfgg", date: "2023-06-28", emissionRate: 20 },
+        { hash: "dcg23asdffsdsdfg", date: "2022-08-28", emissionRate: 21 },
+      ]
   },
   {
     id: 3,
@@ -47,8 +59,8 @@ export const companiesList: CompanyListProps[] = [
     carbonEmissions: 1500,
     ecoscore: 75,
     creditHistory: [
-      { hash: "aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899", date: "2025-02-01", amount: "+50", type: "Credit Purchase", otherParty: "SolarTech Inc" },
-      { hash: "99aabbccddeeff00112233445566778899aabbccddeeff001122334455667788", date: "2024-08-10", amount: "-30", type: "Emission Offset", otherParty: "WindCorp Ltd" },
+      { hash: "f1e2d3c4b5a69788", date: "2025-02-01", amount: "+50", type: "Credit Purchase", otherParty: "SolarTech Inc" },
+      { hash: "abcdefabcdefabcd", date: "2024-08-10", amount: "-30", type: "Emission Offset", otherParty: "WindCorp Ltd" },
     ],
     currentActiveDevices: [
       {
@@ -61,7 +73,13 @@ export const companiesList: CompanyListProps[] = [
           id: "6",
           description: ""
       },
-    ]
+    ],
+    scanHistory: [
+        { hash: "f1e2d3c4b5a69788", date: "2025-02-01", emissionRate: 12 },
+        { hash: "abcdefabcdefabcd", date: "2024-08-28", emissionRate: 15 },
+        { hash: "dcg2335fdfsasfgg", date: "2023-06-28", emissionRate: 20 },
+        { hash: "dcg23asdffsdsdfg", date: "2022-08-28", emissionRate: 21 },
+      ]
   },
   {
     id: 4,
@@ -73,8 +91,8 @@ export const companiesList: CompanyListProps[] = [
     carbonEmissions: 1100,
     ecoscore: 82,
     creditHistory: [
-      { hash: "fedcba98765432100112233445566778899aabbccddeeff0011223344556677", date: "2025-01-10", amount: "+25", type: "Credit Purchase", otherParty: "GreenSolutions" },
-      { hash: "7766554433221100ffeeddccbbaa99887766554433221100ffeeddccbbaa9988", date: "2024-11-20", amount: "-10", type: "Emission Offset", otherParty: "CarbonTech" },
+      { hash: "f1e2d3c4b5a69788", date: "2025-01-10", amount: "+25", type: "Credit Purchase", otherParty: "GreenSolutions" },
+      { hash: "abcdefabcdefabcd", date: "2024-11-20", amount: "-10", type: "Emission Offset", otherParty: "CarbonTech" },
     ],
     currentActiveDevices: [
       {
@@ -87,7 +105,13 @@ export const companiesList: CompanyListProps[] = [
           id: "8",
           description: ""
       },
-    ]
+    ],
+    scanHistory: [
+        { hash: "f1e2d3c4b5a69788", date: "2025-02-01", emissionRate: 12 },
+        { hash: "abcdefabcdefabcd", date: "2024-08-28", emissionRate: 15 },
+        { hash: "dcg2335fdfsasfgg", date: "2023-06-28", emissionRate: 20 },
+        { hash: "dcg23asdffsdsdfg", date: "2022-08-28", emissionRate: 21 },
+      ]
   },
   {
     id: 5,
@@ -99,8 +123,8 @@ export const companiesList: CompanyListProps[] = [
     carbonEmissions: 950,
     ecoscore: 88,
     creditHistory: [
-      { hash: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", date: "2025-01-15", amount: "+40", type: "Credit Purchase", otherParty: "NextGen Energy" },
-      { hash: "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789", date: "2024-10-05", amount: "-20", type: "Emission Offset", otherParty: "SmartEco" },
+      { hash: "f1e2d3c4b5a69788", date: "2025-01-15", amount: "+40", type: "Credit Purchase", otherParty: "NextGen Energy" },
+      { hash: "abcdefabcdefabcd", date: "2024-10-05", amount: "-20", type: "Emission Offset", otherParty: "SmartEco" },
     ],
     currentActiveDevices: [
       {
@@ -113,7 +137,13 @@ export const companiesList: CompanyListProps[] = [
           id: "10",
           description: ""
       },
-    ]
+    ],
+    scanHistory: [
+        { hash: "f1e2d3c4b5a69788", date: "2025-02-01", emissionRate: 12 },
+        { hash: "abcdefabcdefabcd", date: "2024-08-28", emissionRate: 15 },
+        { hash: "dcg2335fdfsasfgg", date: "2023-06-28", emissionRate: 20 },
+        { hash: "dcg23asdffsdsdfg", date: "2022-08-28", emissionRate: 21 },
+      ]
   },
   {
     id: 7,
@@ -125,8 +155,8 @@ export const companiesList: CompanyListProps[] = [
     carbonEmissions: 1050,
     ecoscore: 83,
     creditHistory: [
-      { hash: "e4f3d2c1b0a987654321fedcba0987654321abcdef1234567890abcdef1234", date: "2025-02-05", amount: "+15", type: "Credit Purchase", otherParty: "GreenFuture Inc" },
-      { hash: "c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3", date: "2024-09-30", amount: "-12", type: "Emission Offset", otherParty: "Renewal Energy Ltd" },
+      { hash: "f1e2d3c4b5a69788", date: "2025-02-05", amount: "+15", type: "Credit Purchase", otherParty: "GreenFuture Inc" },
+      { hash:"abcdefabcdefabcd", date: "2024-09-30", amount: "-12", type: "Emission Offset", otherParty: "Renewal Energy Ltd" },
     ],
     currentActiveDevices: [
       {
@@ -139,7 +169,13 @@ export const companiesList: CompanyListProps[] = [
           id: "12",
           description: ""
       },
-    ]
+    ],
+    scanHistory: [
+        { hash: "f1e2d3c4b5a69788", date: "2025-02-01", emissionRate: 12 },
+        { hash: "abcdefabcdefabcd", date: "2024-08-28", emissionRate: 15 },
+        { hash: "dcg2335fdfsasfgg", date: "2023-06-28", emissionRate: 20 },
+        { hash: "dcg23asdffsdsdfg", date: "2022-08-28", emissionRate: 21 },
+      ]
   },
   {
     id: 8,
@@ -151,8 +187,8 @@ export const companiesList: CompanyListProps[] = [
     carbonEmissions: 980,
     ecoscore: 87,
     creditHistory: [
-      { hash: "a1b2c3d4e5f60789abcdef0123456789abcdef0123456789abcdef0123456789", date: "2025-01-28", amount: "+20", type: "Credit Purchase", otherParty: "EcoSmart Innovations" },
-      { hash: "9876543210abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef", date: "2024-11-12", amount: "-18", type: "Emission Offset", otherParty: "CleanEnergy Ltd" },
+      { hash: "f1e2d3c4b5a69788", date: "2025-01-28", amount: "+20", type: "Credit Purchase", otherParty: "EcoSmart Innovations" },
+      { hash: "abcdefabcdefabcd", date: "2024-11-12", amount: "-18", type: "Emission Offset", otherParty: "CleanEnergy Ltd" },
     ],
     currentActiveDevices: [
       {
@@ -165,7 +201,13 @@ export const companiesList: CompanyListProps[] = [
           id: "14",
           description: ""
       },
-    ]
+    ],
+    scanHistory: [
+        { hash: "f1e2d3c4b5a69788", date: "2025-02-01", emissionRate: 12 },
+        { hash: "abcdefabcdefabcd", date: "2024-08-28", emissionRate: 15 },
+        { hash: "dcg2335fdfsasfgg", date: "2023-06-28", emissionRate: 20 },
+        { hash: "dcg23asdffsdsdfg", date: "2022-08-28", emissionRate: 21 },
+      ]
   },
   {
     id: 9,
@@ -177,8 +219,8 @@ export const companiesList: CompanyListProps[] = [
     carbonEmissions: 1020,
     ecoscore: 81,
     creditHistory: [
-      { hash: "abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcd", date: "2025-02-10", amount: "+25", type: "Credit Purchase", otherParty: "SustainableTech" },
-      { hash: "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef", date: "2024-12-18", amount: "-20", type: "Emission Offset", otherParty: "SolarFutures Inc" },
+      { hash: "f1e2d3c4b5a69788", date: "2025-02-10", amount: "+25", type: "Credit Purchase", otherParty: "SustainableTech" },
+      { hash: "abcdefabcdefabcd", date: "2024-12-18", amount: "-20", type: "Emission Offset", otherParty: "SolarFutures Inc" },
     ],
     currentActiveDevices: [
       {
@@ -191,7 +233,13 @@ export const companiesList: CompanyListProps[] = [
           id: "16",
           description: ""
       },
-    ]
+    ],
+    scanHistory: [
+        { hash: "f1e2d3c4b5a69788", date: "2025-02-01", emissionRate: 12 },
+        { hash: "abcdefabcdefabcd", date: "2024-08-28", emissionRate: 15 },
+        { hash: "dcg2335fdfsasfgg", date: "2023-06-28", emissionRate: 20 },
+        { hash: "dcg23asdffsdsdfg", date: "2022-08-28", emissionRate: 21 },
+      ]
   },
   {
     id: 10,
@@ -203,8 +251,8 @@ export const companiesList: CompanyListProps[] = [
     carbonEmissions: 910,
     ecoscore: 91,
     creditHistory: [
-      { hash: "0f1e2d3c4b5a6978876543210abcdef1234567890abcdef1234567890abcdef", date: "2025-02-03", amount: "+35", type: "Credit Purchase", otherParty: "NextWave Solutions" },
-      { hash: "f1e2d3c4b5a6978876543210abcdef1234567890abcdef1234567890abcdef12", date: "2024-10-25", amount: "-22", type: "Emission Offset", otherParty: "GreenSystems" },
+      { hash: "f1e2d3c4b5a69788", date: "2025-02-03", amount: "+35", type: "Credit Purchase", otherParty: "NextWave Solutions" },
+      { hash: "abcdefabcdefabcd", date: "2024-10-25", amount: "-22", type: "Emission Offset", otherParty: "GreenSystems" },
     ],
     currentActiveDevices: [
       {
@@ -217,7 +265,13 @@ export const companiesList: CompanyListProps[] = [
           id: "18",
           description: ""
       },
-    ]
+    ],
+    scanHistory: [
+        { hash: "f1e2d3c4b5a69788", date: "2025-02-01", emissionRate: 12 },
+        { hash: "abcdefabcdefabcd", date: "2024-08-28", emissionRate: 15 },
+        { hash: "dcg2335fdfsasfgg", date: "2023-06-28", emissionRate: 20 },
+        { hash: "dcg23asdffsdsdfg", date: "2022-08-28", emissionRate: 21 },
+      ]
   },
   {
     id: 11,
@@ -229,8 +283,8 @@ export const companiesList: CompanyListProps[] = [
     carbonEmissions: 1080,
     ecoscore: 79,
     creditHistory: [
-      { hash: "abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcd", date: "2025-01-31", amount: "+22", type: "Credit Purchase", otherParty: "WindHarvest Corp" },
-      { hash: "7890abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcd12", date: "2024-11-30", amount: "-14", type: "Emission Offset", otherParty: "EcoSun Technologies" },
+      { hash: "f1e2d3c4b5a69788", date: "2025-01-31", amount: "+22", type: "Credit Purchase", otherParty: "WindHarvest Corp" },
+      { hash: "abcdefabcdefabcd", date: "2024-11-30", amount: "-14", type: "Emission Offset", otherParty: "EcoSun Technologies" },
     ],
     currentActiveDevices: [
       {
@@ -243,7 +297,13 @@ export const companiesList: CompanyListProps[] = [
           id: "18",
           description: ""
       },
-    ]
+    ],
+    scanHistory: [
+        { hash: "f1e2d3c4b5a69788", date: "2025-02-01", emissionRate: 12 },
+        { hash: "abcdefabcdefabcd", date: "2024-08-28", emissionRate: 15 },
+        { hash: "dcg2335fdfsasfgg", date: "2023-06-28", emissionRate: 20 },
+        { hash: "dcg23asdffsdsdfg", date: "2022-08-28", emissionRate: 21 },
+      ]
   },
   {
     id: 12,
@@ -255,8 +315,8 @@ export const companiesList: CompanyListProps[] = [
     carbonEmissions: 970,
     ecoscore: 89,
     creditHistory: [
-      { hash: "1234567890abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcd12", date: "2025-02-08", amount: "+28", type: "Credit Purchase", otherParty: "SolarWave Solutions" },
-      { hash: "abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcd", date: "2024-12-10", amount: "-16", type: "Emission Offset", otherParty: "WindPower Ltd" },
+      { hash: "1234567890abcdef", date: "2025-02-08", amount: "+28", type: "Credit Purchase", otherParty: "SolarWave Solutions" },
+      { hash: "abcdefabcdefabcd", date: "2024-12-10", amount: "-16", type: "Emission Offset", otherParty: "WindPower Ltd" },
     ],
     currentActiveDevices: [
       {
@@ -269,7 +329,13 @@ export const companiesList: CompanyListProps[] = [
           id: "20",
           description: ""
       },
-    ]
+    ],
+    scanHistory: [
+        { hash: "f1e2d3c4b5a69788", date: "2025-02-01", emissionRate: 12 },
+        { hash: "abcdefabcdefabcd", date: "2024-08-28", emissionRate: 15 },
+        { hash: "dcg2335fdfsasfgg", date: "2023-06-28", emissionRate: 20 },
+        { hash: "dcg23asdffsdsdfg", date: "2022-08-28", emissionRate: 21 },
+      ]
   },
   {
     id: 13,
@@ -281,8 +347,8 @@ export const companiesList: CompanyListProps[] = [
     carbonEmissions: 1040,
     ecoscore: 85,
     creditHistory: [
-      { hash: "f1e2d3c4b5a6978876543210abcdef1234567890abcdef1234567890abcdef", date: "2025-01-20", amount: "+25", type: "Credit Purchase", otherParty: "EcoSmart Innovations" },
-      { hash: "abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcd", date: "2024-11-18", amount: "-19", type: "Emission Offset", otherParty: "GreenPlanet Systems" },
+      { hash: "f1e2d3c4b5a69788", date: "2025-01-20", amount: "+25", type: "Credit Purchase", otherParty: "EcoSmart Innovations" },
+      { hash: "abcdefabcdefabcd", date: "2024-11-18", amount: "-19", type: "Emission Offset", otherParty: "GreenPlanet Systems" },
     ],
     currentActiveDevices: [
       {
@@ -295,7 +361,13 @@ export const companiesList: CompanyListProps[] = [
           id: "22",
           description: ""
       },
-    ]
+    ],
+    scanHistory: [
+        { hash: "f1e2d3c4b5a69788", date: "2025-02-01", emissionRate: 12 },
+        { hash: "abcdefabcdefabcd", date: "2024-08-28", emissionRate: 15 },
+        { hash: "dcg2335fdfsasfgg", date: "2023-06-28", emissionRate: 20 },
+        { hash: "dcg23asdffsdsdfg", date: "2022-08-28", emissionRate: 21 },
+      ]
   }
 ];
 

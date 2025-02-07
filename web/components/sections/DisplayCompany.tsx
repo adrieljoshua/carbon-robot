@@ -6,6 +6,7 @@ import Image from 'next/image';
 
 const DisplayCompany: React.FC<DisplayCompanyProps> = ({ company }) => {
   const [showCreditHistory, setShowCreditHistory] = useState(false); // Added state for modal visibility
+  const [showScanHistory, setShowScanHistory] = useState(false); // Added state for modal visibility
 
   return (
     <div className="w-full font-syne min-h-screen p-10 text-black">
@@ -42,7 +43,7 @@ const DisplayCompany: React.FC<DisplayCompanyProps> = ({ company }) => {
             onClick={() => setShowCreditHistory(true)}
             className="text-sm font-medium text-white bg-black px-4 py-2 rounded hover:bg-black/40"
           >
-            View Complete History
+            View History
           </button>
         )}
       </h2>
@@ -64,7 +65,34 @@ const DisplayCompany: React.FC<DisplayCompanyProps> = ({ company }) => {
         <h1 className="mt-10 text-center">No recorded credit transactions.</h1>
       )}
 
-      <h2 className="text-2xl font-semibold mt-8 border-b-4 border-black pb-2">Currently Active Devices</h2>
+      {/* Emission Scan History */}
+          <h2 className="text-2xl font-semibold mt-6 border-b-4 border-black pb-2 flex justify-between">
+            Emission Scan History
+            {company.creditHistory.length > 0 && (
+              <button
+                onClick={() => setShowScanHistory(true)}
+                className="text-sm font-medium text-white bg-black px-4 py-2 rounded hover:bg-black/40"
+              >
+                View History
+              </button>
+            )}
+          </h2>
+
+          {(company.scanHistory.length > 0) ? (
+          <ul className="text-lg mt-3 space-y-2">
+            {company.scanHistory.slice(0, 2).map((entry, index) => (
+              <li key={index} className="flex justify-between w-96 px-2 py-1 border-l-4 border-gray-800">
+                <span className="font-mono">{entry.date}</span>
+                <span className="text-blue-700 font-bold">
+                  {entry.emissionRate} tonnes
+                </span>
+              </li>
+            ))}
+          </ul>):(
+            <h1 className="mt-10 text-center">No emission scans reported.</h1>
+          )} 
+
+      <h2 className="text-2xl font-semibold mt-8 border-b-4 border-black pb-2">Devices</h2>
       <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {company.currentActiveDevices.map((device, index) => (
         <div
@@ -84,21 +112,56 @@ const DisplayCompany: React.FC<DisplayCompanyProps> = ({ company }) => {
         <Modal
           title="Full Credit History"
           onClose={() => setShowCreditHistory(false)}
-          className="w-[800px] max-w-4xl"
+          className="w-[1200px] max-w-5xl"
         >
           <ul className="w-full">
+            <li className="grid grid-cols-5 text-center px-4 gap-x-10 font-syne py-2 border-b-2 border-black">
+              <span className="text-gray-400 text-wrap">Hash</span>
+              <span className="">Date</span>
+              <span className="">Amount</span>
+              <span className="">Type</span>
+              <span className="">Other Party</span>
+            </li>
             {company.creditHistory.map((entry, index) => (
               <li
                 key={index}
-                className="grid grid-cols-5 text-center px-4 py-2 border-b border-gray-300"
+                className="grid grid-cols-5 text-center px-4 py-2 gap-x-10 border-b border-gray-300"
               >
-                <span className="text-gray-400 font-mono">{entry.hash}</span>
+                <span className="text-gray-400 text-wrap font-mono">{entry.hash}</span>
                 <span className="font-mono">{entry.date}</span>
                 <span className={entry.amount.includes("+") ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
                   {entry.amount}
                 </span>
                 <span className="text-gray-500">{entry.type}</span>
                 <span className="text-gray-500">{entry.otherParty}</span>
+              </li>
+            ))}
+          </ul>
+        </Modal>
+      )}
+
+      {showScanHistory && (
+        <Modal
+          title="Full Emission Scan History"
+          onClose={() => setShowScanHistory(false)}
+          className="w-[1200px] max-w-5xl"
+        >
+          <ul className="w-full">
+            <li className="grid grid-cols-3 text-center px-4 gap-x-10 font-syne py-2 border-b-2 border-black">
+              <span className="text-gray-400 text-wrap">Hash</span>
+              <span className="">Date</span>
+              <span className="">Emission Rate</span>
+            </li>
+            {company.scanHistory.map((entry, index) => (
+              <li
+                key={index}
+                className="grid grid-cols-3 text-center px-4 py-2 gap-x-10 border-b border-gray-300"
+              >
+                <span className="text-gray-400 text-wrap font-mono">{entry.hash}</span>
+                <span className="font-mono">{entry.date}</span>
+                <span className="text-blue-700 font-bold">
+                  {entry.emissionRate} tonnes
+                </span>
               </li>
             ))}
           </ul>

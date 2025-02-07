@@ -10,7 +10,7 @@ import { Button } from "../ui/button";
 import { CompanyProps, Device } from "@/types/types";
 import EmissionScanTerminal from "./Terminal";
 import Image from "next/image";
-
+import { useRouter } from "next/navigation";
 
 const YourCompany = () => {
   const { formData } = useContext(Context);
@@ -24,6 +24,7 @@ const YourCompany = () => {
   const [showTerminal, setShowTerminal] = useState(false);
   const [invalidPrivateKey, setInvalidPrivateKey] = useState(false);
   const [privateKey, setPrivateKey] = useState("");
+  const router = useRouter();
  
 
   useEffect(() => {
@@ -76,6 +77,11 @@ const YourCompany = () => {
       }));
     }
   }, [formData]);
+
+
+  const handleRegisterCompany = () => {
+        router.push("/register-company");
+    }
 
 
   return (
@@ -132,7 +138,34 @@ const YourCompany = () => {
             ))}
           </ul>):(
             <h1 className="mt-10 text-center">No recorded credit transactions.</h1>
-          )}
+          )} 
+
+           {/* Emission Scan History */}
+          <h2 className="text-2xl font-semibold mt-6 border-b-4 border-black pb-2 flex justify-between">
+            Emission Scan History
+            {company.creditHistory.length > 0 && (
+              <button
+                onClick={() => setShowCreditHistory(true)}
+                className="text-sm font-medium text-white bg-black px-4 py-2 rounded hover:bg-black/40"
+              >
+                View Complete History
+              </button>
+            )}
+          </h2>
+
+          {(company.creditHistory.length > 0) ? (
+          <ul className="text-lg mt-3 space-y-2">
+            {company.creditHistory.slice(0, 2).map((entry, index) => (
+              <li key={index} className="flex justify-between w-96 px-2 py-1 border-l-4 border-gray-800">
+                <span className="font-mono">{entry.date}</span>
+                <span className={entry.amount.includes("+") ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
+                  {entry.amount} Credits
+                </span>
+              </li>
+            ))}
+          </ul>):(
+            <h1 className="mt-10 text-center">No emission scans reported.</h1>
+          )} 
 
           <h2 className="text-2xl font-semibold mt-8 border-b-4 border-black pb-2">
             Currently Active Devices
@@ -172,28 +205,35 @@ const YourCompany = () => {
 
           {/* Modals */}
           {showCreditHistory && (
-            <Modal 
-              title="Full Credit History" 
-              onClose={() => setShowCreditHistory(false)} 
-              className="w-[800px] max-w-4xl"
-            >
-              <ul className="w-full">
-                {company.creditHistory.map((entry, index) => (
-                  <li 
-                    key={index} 
-                    className="grid grid-cols-5 text-center px-4 py-2 border-b border-gray-300"
-                  >
-                    <span className="text-gray-400 font-mono">{entry.hash}</span>
-                    <span className="font-mono">{entry.date}</span>
-                    <span className={entry.amount.includes("+") ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
-                      {entry.amount}
-                    </span>
-                    <span className="text-gray-500">{entry.type}</span>
-                    <span className="text-gray-500">{entry.otherParty}</span>
-                  </li>
-                ))}
-              </ul>
-            </Modal>
+           <Modal
+          title="Full Credit History"
+          onClose={() => setShowCreditHistory(false)}
+          className="w-[1200px] max-w-5xl"
+        >
+          <ul className="w-full">
+            <li className="grid grid-cols-5 text-center px-4 gap-x-10 font-syne py-2 border-b-2 border-black">
+              <span className="text-gray-400 text-wrap">Hash</span>
+              <span className="">Date</span>
+              <span className="">Amount</span>
+              <span className="">Type</span>
+              <span className="">Other Party</span>
+            </li>
+            {company.creditHistory.map((entry, index) => (
+              <li
+                key={index}
+                className="grid grid-cols-5 text-center px-4 py-2 gap-x-10 border-b border-gray-300"
+              >
+                <span className="text-gray-400 text-wrap font-mono">{entry.hash}</span>
+                <span className="font-mono">{entry.date}</span>
+                <span className={entry.amount.includes("+") ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
+                  {entry.amount}
+                </span>
+                <span className="text-gray-500">{entry.type}</span>
+                <span className="text-gray-500">{entry.otherParty}</span>
+              </li>
+            ))}
+          </ul>
+        </Modal>
           )}
 
         {addDevice && (
@@ -296,8 +336,9 @@ const YourCompany = () => {
         {showTerminal && <EmissionScanTerminal onClose={() => setShowTerminal(false)} />}
         </>
       ) : (
-        <div className="flex  justify-center h-screen">
+        <div className="flex flex-col items-center justify-center gap-6 h-full">
           <h1 className="text-xl mt-20 text-center ">Your Company has not been registered.</h1>
+          <button className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-900" onClick={()=>handleRegisterCompany()}>REGISTER COMPANY</button>
         </div>
       )}
     </div>
@@ -323,6 +364,9 @@ const CompanyDetails = {
   ],
   currentActiveDevices: [
 
+  ],
+  scanHistory: [
+    // Add scan history entries here if needed
   ]
 }
 

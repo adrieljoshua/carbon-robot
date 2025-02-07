@@ -10,6 +10,7 @@ const SideBar = () => {
     const [showLeaderboard, setShowLeaderboard] = useState(false);
     const [showDevices, setShowDevices] = useState(false);
     const router = useRouter();
+
     const handleRegisterCompany = () => {
         router.push("/register-company");
     }
