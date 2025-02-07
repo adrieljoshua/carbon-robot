@@ -1,20 +1,8 @@
-import { PlusIcon } from 'lucide-react';
 import React, { useState } from 'react';
 import Modal from '../user-defined/Modal';
+import { DisplayCompanyProps } from '../../types/types';
+import Image from 'next/image';
 
-interface DisplayCompanyProps {
-  company: {
-    name: string;
-    carbonCredits: number;
-    leaderboardRank: number;
-    prevLeaderboardRank: number;
-    carbonEmissions: number; // Added missing prop for carbon emissions
-    ecoscore: number; // Added missing prop for eco score
-    leaderboard: number; // Fixed inconsistent leaderboard property name
-    creditHistory: { date: string, amount: string, type: string, id: string, otherParty: string }[];
-    currentActiveDevices: { name: string; state: string; photoUrl: string }[]; // Added active devices props
-  };
-}
 
 const DisplayCompany: React.FC<DisplayCompanyProps> = ({ company }) => {
   const [showCreditHistory, setShowCreditHistory] = useState(false); // Added state for modal visibility
@@ -41,7 +29,7 @@ const DisplayCompany: React.FC<DisplayCompanyProps> = ({ company }) => {
         </div>
         <div className="text-xl font-semibold">
           Leaderboard Position:{" "}
-          <span className="text-3xl font-bold text-green-600">{company.leaderboardRank}</span>
+          <span className="text-3xl font-bold text-green-600">{company.rank}</span>
         </div>
       </div>
 
@@ -84,7 +72,7 @@ const DisplayCompany: React.FC<DisplayCompanyProps> = ({ company }) => {
             hover:translate-x-1 hover:translate-y-1"
         >
           <div className="w-20 h-20 flex items-center justify-center overflow-hidden">
-            <img src={device.photoUrl} alt={device.name} className="w-full h-full object-contain" />
+            <Image src={device.photoUrl} alt={device.name} className="w-full h-full object-contain" />
           </div>
           <h3 className="text-lg font-medium text-gray-800">{device.name}</h3>
         </div>
@@ -103,7 +91,7 @@ const DisplayCompany: React.FC<DisplayCompanyProps> = ({ company }) => {
                 key={index}
                 className="grid grid-cols-5 text-center px-4 py-2 border-b border-gray-300"
               >
-                <span className="text-gray-400 font-mono">{entry.id}</span>
+                <span className="text-gray-400 font-mono">{entry.hash}</span>
                 <span className="font-mono">{entry.date}</span>
                 <span className={entry.amount.includes("+") ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
                   {entry.amount}

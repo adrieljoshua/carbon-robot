@@ -1,19 +1,8 @@
 import { ArrowRight, ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { IconType } from "react-icons"; // To type the icon properly
-
-interface CompanyCardProps {
-  company: {
-    name: string;
-    carbonCredits: number;
-    leaderboardRank: number;
-    prevLeaderboardRank: number;
-  };
-  logo: IconType;  // This is the prop for the logo icon
-}
-
+import { CompanyCardProps } from "../../types/types";
 
 const CompanyCard: React.FC<CompanyCardProps> = ({ company, logo: Logo, onViewCompany }) => {
-  const isLeaderboardImproved = company.leaderboardRank < company.prevLeaderboardRank;
+  const isLeaderboardImproved = (company.rank ?? Infinity) < (company.previousRank ?? Infinity);
 
   return (
     <div className="w-80 rounded-lg p-4
@@ -40,7 +29,7 @@ const CompanyCard: React.FC<CompanyCardProps> = ({ company, logo: Logo, onViewCo
 
       {/* Leaderboard Rank */}
       <div className={`mt-2 px-3 py-1 flex items-center gap-x-3 text-sm font-vt323 border border-black rounded-full max-w-fit ${isLeaderboardImproved ? "text-green-600" : "text-red-600"}`}>
-        #{company.leaderboardRank} on ECO-LEADERBOARD
+        #{company.rank} on ECO-LEADERBOARD
         {isLeaderboardImproved ? <ArrowUpRight size={14} className="text-green-600" /> : <ArrowDownRight size={14} className="text-red-600" />}
       </div>
 
@@ -48,7 +37,7 @@ const CompanyCard: React.FC<CompanyCardProps> = ({ company, logo: Logo, onViewCo
       <div className="border-t border-black mt-4 mb-2"></div>
 
       {/* View Company Button */}
-      <div className="flex justify-end gap-x-3 items-center cursor-pointer" onClick={onViewCompany}>
+      <div className="flex justify-end gap-x-3 items-center cursor-pointer" onClick={()=>onViewCompany()}>
         <span className="text-sm font-syne">View Company</span>
         <ArrowRight />
       </div>

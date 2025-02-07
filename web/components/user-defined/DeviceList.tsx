@@ -1,35 +1,38 @@
 'use client'
 import { useState, useContext } from "react";
 import { Context } from "@/context/Context";
-import { v4 as uuidv4 } from "uuid";
-import { stat } from "fs";
-
+import Image from "next/image";
+import { Device } from "@/types/types";
 
 export const devicesList = [
-  { name: "FLIR A615 Thermal Camera",
+  { id: "",
+    name: "FLIR A615 Thermal Camera",
     photoUrl: "/images/FLIR-A615-Thermal-Camera.png", 
     model: "DEV-1",state: "Unconfigured",
     description: "The FLIR A615 is a compact thermal imaging camera designed for condition monitoring, process control, quality assurance, and fire prevention. It features a 640 x 480 pixel microbolometer that detects temperature differences as small as 50 mK, ensuring accuracy at longer distances. The camera offers 16-bit temperature linear output, allowing integration with third-party software. It can stream full-frame 16-bit images at 50 Hz, or up to 200 Hz in windowed mode, accommodating high-speed processes." 
   },
-  { name: "AeroVironment Quantix Drone",
+  { id: "",
+    name: "AeroVironment Quantix Drone",
     photoUrl: "/images/AeroVironment Quantix Drone.png",
     model: "DEV-2", 
     state:"Unconfigured",
     description: "The AeroVironment Quantix is a hybrid vertical takeoff and landing (VTOL) drone designed for commercial applications. It combines the vertical takeoff and landing capabilities of a quadcopter with the speed and endurance of a fixed-wing aircraft. This design allows for efficient data collection over large areas, making it suitable for agriculture, construction, and environmental monitoring.",
   },
-  { name: "SenseFly eBee X Drone",
+  { id: "",
+    name: "SenseFly eBee X Drone",
     photoUrl: "/images/SenseFly eBee X Drone.png", 
     model: "DEV-3", 
     state:"Unconfigured" ,
     description: "The SenseFly eBee X is a fixed-wing drone designed for professional mapping and surveying. It offers extended flight times and the ability to cover large areas, making it ideal for applications such as agriculture, mining, and environmental monitoring. The eBee X is known for its ease of use and high-quality data collection capabilities."
   },
-  { name: "Horiba PG-250 Portable Gas Analyzer",
+  { id: "",
+    name: "Horiba PG-250 Portable Gas Analyzer",
     photoUrl: "/images/Horiba PG-250 Portable Gas Analyzer.png", 
     model: "DEV-4", 
     state:"Unconfigured",
     description: "The Horiba PG-250 is a portable gas analyzer designed for measuring emissions from diesel engines. It provides real-time data on pollutants such as NOx, CO, CO₂, and particulate matter, enabling operators to monitor and optimize engine performance. The device is compact and rugged, suitable for field use in various industries."
   },
-  {
+  { id: "",
     name: "DJI Matrice 300 RTK Drone",
     photoUrl: "/images/DJI Matrice 300 RTK Drone.png",
     model: "DEV-5",
@@ -38,11 +41,15 @@ export const devicesList = [
   }
 ];
 
-function DeviceList({ onClose }) {
-  const [selectedDevice, setSelectedDevice] = useState(null);
+interface DeviceListProps {
+  onClose: () => void;
+}
+
+function DeviceList({ onClose }: DeviceListProps) {
+  const [selectedDevice, setSelectedDevice] = useState<Device | null>(null);
   const { setSelectedDeviceData } = useContext(Context);
 
-  const handleDeviceSelect = (device) => {
+  const handleDeviceSelect = (device: Device) => {
     setSelectedDevice({ ...device, id: crypto.randomUUID() }); // Assign a unique ID
   };
 
@@ -66,7 +73,7 @@ function DeviceList({ onClose }) {
           >
             {/* Device Image */}
             <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
-              <img src={device.photoUrl} alt={device.name} className="w-full h-full object-contain" />
+              <Image src={device.photoUrl} alt={device.name} className="w-full h-full object-contain" />
             </div>
 
             {/* Device Name */}

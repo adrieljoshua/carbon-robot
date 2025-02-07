@@ -1,10 +1,10 @@
+import Script from "next/script";  // Import Next.js Script component
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import {archivo, vt323, syne, tacticalSans} from "./styles/fonts";
+import { archivo, vt323, syne, tacticalSans } from "./styles/fonts";
 import { Toaster } from "@/components/ui/toaster";
 import { DataProvider } from '../context/Context';
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,21 +31,30 @@ export default function RootLayout({
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="/>
-     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="></script>
+        <link
+          rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossOrigin=""
+        />
       </head>
       
       <body
-         className={`${archivo.variable} ${vt323.variable} ${syne.variable} ${tacticalSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${archivo.variable} ${vt323.variable} ${syne.variable} ${tacticalSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <DataProvider>
-        {children}
-        <Toaster />
+          {children}
+          <Toaster />
         </DataProvider>
+
+        {/* Load Leaflet asynchronously with next/script */}
+        <Script
+          src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          strategy="afterInteractive" // Ensures it loads after hydration
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossOrigin=""
+        />
       </body>
     </html>
-    
   );
 }

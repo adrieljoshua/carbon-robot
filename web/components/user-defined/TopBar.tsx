@@ -5,8 +5,8 @@ import Logo from "../../public/images/logo.png";
 import Wallet from "../../public/images/barvoos.png"
 
 const TopBar = () => {
-    const [walletAddress,setWalletAddress] = useState("0x1234567890abcdef1234567890abcdef12345678");
-    const [walletConnected,setWalletConnected] = useState(false);
+    const [walletAddress] = useState("0x1234567890abcdef1234567890abcdef12345678");
+    const [walletConnected] = useState(false);
 
     function shortenAddress(address: string, chars = 4): string {
         return `${address.slice(0, chars + 2)}...${address.slice(-chars)}`;

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "../ui/button";
-import { ScanSearchIcon, Minus, X } from "lucide-react";
+import { Minus, X } from "lucide-react";
 
-const EmissionScanTerminal = ({ onClose }) => {
+interface EmissionScanTerminalProps {
+  onClose: () => void;
+}
+
+const EmissionScanTerminal: React.FC<EmissionScanTerminalProps> = ({ onClose }) => {
   const [logs, setLogs] = useState(["Initializing scan..."]);
   const [minimized, setMinimized] = useState(false);
   const [scanStarted, setScanStarted] = useState(false);  // Flag to track scan initiation

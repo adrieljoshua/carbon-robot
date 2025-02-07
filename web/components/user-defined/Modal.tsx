@@ -1,6 +1,15 @@
-import { X, XCircleIcon } from "lucide-react";
+import { XCircleIcon } from "lucide-react";
 
-const Modal = ({ title, children, onClose, className = "" }) => {
+import { ReactNode } from "react";
+
+interface ModalProps {
+  title: string;
+  children: ReactNode;
+  onClose: () => void;
+  className?: string;
+}
+
+const Modal = ({ title, children, onClose, className = "" }: ModalProps) => {
     return (
       <div 
         className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 font-syne backdrop-blur-sm">

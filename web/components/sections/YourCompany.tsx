@@ -4,20 +4,21 @@ import React, { useEffect, useState } from "react";
 import Modal from "../user-defined/Modal";
 import { Context } from "@/context/Context";
 import { useContext } from "react";
-import { CheckCircle, PlusCircleIcon, PlusIcon, Scan, ScanIcon, ScanSearchIcon } from "lucide-react";
+import { CheckCircle, PlusIcon, ScanSearchIcon } from "lucide-react";
 import DeviceList from "../user-defined/DeviceList";
 import { Button } from "../ui/button";
-import { v4 as uuidv4 } from 'uuid';
+import { CompanyProps, Device } from "@/types/types";
 import EmissionScanTerminal from "./Terminal";
+import Image from "next/image";
 
 
 const YourCompany = () => {
   const { formData } = useContext(Context);
   const {  selectedDeviceData } = useContext(Context);
   // const formData = { companyName: "ABC Company", location: "T Nagar, Chennai, India" };  //Comment this line after integrating with the actual data
-  const [company,setCompany] = useState(CompanyDetails);
+  const [company, setCompany] = useState<CompanyProps>(CompanyDetails);
   const [showCreditHistory, setShowCreditHistory] = useState(false);
-  const [selectedDevice, setSelectedDevice] = useState(null);
+  const [selectedDevice, setSelectedDevice] = useState<CompanyProps["currentActiveDevices"][number] | null>(null);
   const [addDevice, setAddDevice] = useState(false);
   const [configureDevice, setConfigureDevice] = useState(false);
   const [showTerminal, setShowTerminal] = useState(false);
@@ -27,7 +28,14 @@ const YourCompany = () => {
 
   useEffect(() => {
     if (selectedDeviceData) {
-      const newDevice = { ...selectedDeviceData, id: crypto.randomUUID() }; // Assign unique ID
+      const newDevice: Device = {
+    ...selectedDeviceData,
+    id: crypto.randomUUID(),
+    model: "Unknown Model", // ✅ Provide default values
+    description: "No description available", // ✅ Provide default values
+    state: "Unconfigured", // ✅ Provide default values
+  };
+ // Assign unique ID
       setCompany((prevCompany) => ({
         ...prevCompany,
         currentActiveDevices: [...prevCompany.currentActiveDevices, newDevice],
@@ -95,7 +103,7 @@ const YourCompany = () => {
             </div>
             <div className="text-xl font-semibold">
               Leaderboard Position:{" "}
-              <span className="text-3xl font-bold text-green-600">{company.leaderboard}</span>
+              <span className="text-3xl font-bold text-green-600">{company.rank}</span>
             </div>
           </div>
 
@@ -149,7 +157,7 @@ const YourCompany = () => {
                 `}
               >
                 <div className="w-20 h-20 flex items-center justify-center overflow-hidden">
-                  <img 
+                  <Image 
                     src={device.photoUrl} 
                     alt={device.name} 
                     className="w-full h-full object-contain" 
@@ -173,7 +181,7 @@ const YourCompany = () => {
                     key={index} 
                     className="grid grid-cols-5 text-center px-4 py-2 border-b border-gray-300"
                   >
-                    <span className="text-gray-400 font-mono">{entry.id}</span>
+                    <span className="text-gray-400 font-mono">{entry.hash}</span>
                     <span className="font-mono">{entry.date}</span>
                     <span className={entry.amount.includes("+") ? "text-green-600 font-bold" : "text-red-600 font-bold"}>
                       {entry.amount}
@@ -204,7 +212,7 @@ const YourCompany = () => {
               className="w-[500px] no-scrollbar overflow-y-auto"
             >
               <div className="flex flex-col items-center no-scrollbar overflow-y-auto">
-                <img 
+                <Image
                   src={selectedDevice.photoUrl} 
                   alt={selectedDevice.name} 
                   className="w-64 h-64 object-contain border-2 border-gray-200 mb-4" 
@@ -248,7 +256,7 @@ const YourCompany = () => {
         >
           <div className="flex items-center gap-6 no-scrollbar overflow-y-auto">
             <div className="w-full flex flex-col gap-1 items-center">
-              <input type="text" onChange={(e:any)=>setPrivateKey(e.target.value)} placeholder="Enter device private key to configure" className="w-full border-2 border-gray-300 rounded-sm active:border-gray-300 px-4 py-2"/>
+              <input type="text" onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setPrivateKey(e.target.value)} placeholder="Enter device private key to configure" className="w-full border-2 border-gray-300 rounded-sm active:border-gray-300 px-4 py-2"/>
               {invalidPrivateKey && <p className="text-red-500 text-sm">Authentication failed. Enter valid private key.</p>}
             </div>
             <Button className="bg-green-600" onClick={() => handlePrivateKeySubmission(privateKey)}>Configure</Button>
@@ -294,12 +302,14 @@ const YourCompany = () => {
 
 
 const CompanyDetails = {
+  id: 1457,
   name: "",
   location: "",
-  ecoscore: "-",
-  leaderboard: "-",
+  ecoscore: null,
   carbonCredits: 0,
-  carbonEmissions: "-",
+  carbonEmissions: null,
+  rank: null,
+  previousRank: null,
   creditHistory: [
     // { date: "2025-02-01", amount: "+12", type: "Credit Purchase", id: "#TXN123",otherParty: "XYZ Company" },
     // { date: "2024-08-28", amount: "-15", type: "Emission Offset", id: "#TXN456",otherParty: "SmartTech Solutions" },

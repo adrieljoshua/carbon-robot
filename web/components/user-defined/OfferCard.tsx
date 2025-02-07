@@ -1,6 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import { JSX } from "react";
-import { IconType } from "react-icons";
+import Image, { StaticImageData } from "next/image";
 
 
 interface OfferCardProps {
@@ -8,10 +7,10 @@ interface OfferCardProps {
     offer: number;
     inExchangeFor: number;
     isOfferCredits: boolean;
-    image?: JSX.Element;
+    image?: StaticImageData;
 }
 
-const OfferCard: React.FC<OfferCardProps> = ({ orgName, offer, inExchangeFor, isOfferCredits,image }) => {
+const OfferCard: React.FC<OfferCardProps> = ({ orgName, offer, inExchangeFor, image }) => {
     //TODO: Filter Cards
     return(
      <div className="w-80 rounded-lg p-4
@@ -21,9 +20,11 @@ const OfferCard: React.FC<OfferCardProps> = ({ orgName, offer, inExchangeFor, is
         <div className="flex items-center justify-between mt-4">
             <h2 className="text-xl font-syne font-semibold">{orgName}</h2>
             {/* Render the logo */}
-            <div className="w-24 h-24  border-black rounded-full flex items-center justify-center overflow-hidden">
-                <img src={image.src} alt=""/>
-            </div>
+            {image && (
+                <div className="w-24 h-24  border-black rounded-full flex items-center justify-center overflow-hidden">
+                    <Image src={image.src} alt=""/>
+                </div>
+            )}
         </div>
       {/* Carbon Credits */}
       <div className="flex items-center">
@@ -31,13 +32,11 @@ const OfferCard: React.FC<OfferCardProps> = ({ orgName, offer, inExchangeFor, is
           Offer: <span className="">{offer} Credits</span>
         </div>
       </div>
-      {/* Leaderboard Rank */}
       <div className={`mt-2 px-3 py-1 flex items-center gap-x-3 text-lg 3 max-w-fit`}>
         In Exchange For: <span>${inExchangeFor}</span>
       </div>
       {/* Divider */}
       <div className="border-t border-black mt-4 mb-2"></div>
-      {/* View Company Button */}
       <div className="flex justify-end gap-x-3 items-center cursor-pointer">
         <span className="text-sm font-syne">Accept Offer</span>
         <ArrowRight />

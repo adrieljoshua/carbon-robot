@@ -31,7 +31,7 @@ const DashBoard = () => {
             <TabsList className="w-full ml-8 flex justify-start gap-4">
               <TabsTrigger value="companies">Companies</TabsTrigger>
               <TabsTrigger value="your-company">Your Company</TabsTrigger>
-              <TabsTrigger value="buy-credits">Buy/Sell Credits</TabsTrigger>
+            <TabsTrigger value="buy-credits">Buy/Sell Credits</TabsTrigger>
             </TabsList>
     
             <TabsContent value="companies" className="mt-8"><Companies/></TabsContent>

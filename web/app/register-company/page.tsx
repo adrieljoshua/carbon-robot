@@ -3,25 +3,36 @@ import SideBar from "@/components/user-defined/SideBar";
 import TopBar from "@/components/user-defined/TopBar";
 import LocationPicker from "@/components/user-defined/LocationMarker";
 import { Button } from "@/components/ui/button";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation";
 import { Context } from "@/context/Context";
+import { CustomLocation } from "@/types/types";
 
 const RegisterCompany = () => {
+    const [isClient, setIsClient] = useState(false);
     const { toast } = useToast()
-    const [companyName, setCompanyName] = useState("");
-    const [location, setLocation] = useState(null);
-    const { formData, setFormData } = useContext(Context);
+    const [companyName, setCompanyName] = useState<string>(""); // ✅ Explicitly define as string
+    const [location, setLocation] = useState<CustomLocation | null>(null); // ✅ Ensure CustomLocation is defined
+    const { setFormData } = useContext(Context);
     const router = useRouter();
+
+     useEffect(() => {
+        setIsClient(true); // Set to true after the component has mounted
+    }, []);
+
+    if (!isClient) {
+        return null; // Prevent rendering on the server
+    }
     
-    const handleSubmitClick = (e) => {
-      e.preventDefault();
-      setFormData({ companyName, location });
-      toast({ title: "Company Successfully Registered", description: `Company Name: ${companyName}` })
-      router.push("/dashboard");
+    const handleSubmitClick = (e: React.FormEvent<HTMLFormElement>) => { 
+    e.preventDefault();
+    setFormData({ companyName, location });
+    toast({ title: "Company Successfully Registered", description: `Company Name: ${companyName}` });
+    router.push("/dashboard");
     };
+
 
     return (
       <div className="flex z-0 flex-col">
@@ -36,7 +47,7 @@ const RegisterCompany = () => {
                 <h2 className="text-2xl font-syne font-semibold">Enter Company Name</h2>
                 <Input id="companyName" type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} className="w-full" />
                 <h2 className="text-2xl font-syne font-semibold mt-4">Select Location</h2>
-                <div className="max-w-md min-w-96"> <LocationPicker onLocationSelect={setLocation} /> </div>
+                <div className="max-w-md min-w-96"> <LocationPicker onLocationSelect={(location: CustomLocation | null) => setLocation(location)} /> </div>
                 {companyName && ( <Button type="submit" className="font-syne mt-4"> Register Company </Button> )}
               </div>
             </form>
