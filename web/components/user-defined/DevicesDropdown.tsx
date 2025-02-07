@@ -25,7 +25,7 @@ const DeviceDropdown: React.FC<DeviceDropdownProps> = () => {  const [deviceSele
             >
               {/* Device Image */}
               <div className="w-12 h-12 flex items-center justify-center  overflow-hidden">
-                <Image src={device.photoUrl} alt={device.name} className="w-full h-full object-contain" />
+                <Image src={device.photoUrl} width={50} height={50} alt={device.name} className="" />
               </div>
   
               {/* Device Name */}
@@ -41,6 +41,8 @@ const DeviceDropdown: React.FC<DeviceDropdownProps> = () => {  const [deviceSele
             >
               <div className="flex flex-col items-center no-scrollbar overflow-y-auto">
                 <Image 
+                  width={256}
+                  height={256}
                   src={deviceSelected.photoUrl} 
                   alt={deviceSelected.name} 
                   className="w-64 h-64 object-contain border-2 border-gray-200 mb-4" 

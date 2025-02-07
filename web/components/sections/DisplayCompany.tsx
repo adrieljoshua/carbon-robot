@@ -9,10 +9,11 @@ const DisplayCompany: React.FC<DisplayCompanyProps> = ({ company }) => {
 
   return (
     <div className="w-full font-syne min-h-screen p-10 text-black">
-      <h1 className="text-4xl font-bold mb-6 border-b-4 border-black pb-3 tracking-wide">
-        {company.name}
-      </h1>
-
+      <h1 className="text-4xl font-bold mb-2 tracking-wide">
+            {company.name}
+            
+          </h1>
+          <p className="text-sm mb-6 border-b-4 font-mono border-black pb-3"> <span className="font-bold">Location: </span> {company.location}</p>
       {/* Key Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
         <div className="text-xl font-semibold">
@@ -72,7 +73,7 @@ const DisplayCompany: React.FC<DisplayCompanyProps> = ({ company }) => {
             hover:translate-x-1 hover:translate-y-1"
         >
           <div className="w-20 h-20 flex items-center justify-center overflow-hidden">
-            <Image src={device.photoUrl} alt={device.name} className="w-full h-full object-contain" />
+            <Image src={device.photoUrl} width={20} height={20} alt={device.name} className="w-full h-full object-contain" />
           </div>
           <h3 className="text-lg font-medium text-gray-800">{device.name}</h3>
         </div>

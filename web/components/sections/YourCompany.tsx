@@ -160,6 +160,8 @@ const YourCompany = () => {
                   <Image 
                     src={device.photoUrl} 
                     alt={device.name} 
+                    width={20}
+                    height={20}
                     className="w-full h-full object-contain" 
                   />
                 </div>
@@ -213,6 +215,8 @@ const YourCompany = () => {
             >
               <div className="flex flex-col items-center no-scrollbar overflow-y-auto">
                 <Image
+                width={64}
+                height={64}
                   src={selectedDevice.photoUrl} 
                   alt={selectedDevice.name} 
                   className="w-64 h-64 object-contain border-2 border-gray-200 mb-4" 

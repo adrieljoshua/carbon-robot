@@ -29,8 +29,8 @@ const DashBoard = () => {
           <main className="flex flex-col items-center font-syne h-full w-full px-6" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
           <Tabs defaultValue="companies" className="mt-8 w-full max-w-[calc(100vw-300px)]"> 
             <TabsList className="w-full ml-8 flex justify-start gap-4">
-              <TabsTrigger value="companies">Companies</TabsTrigger>
               <TabsTrigger value="your-company">Your Company</TabsTrigger>
+              <TabsTrigger value="companies">Companies</TabsTrigger>
             <TabsTrigger value="buy-credits">Buy/Sell Credits</TabsTrigger>
             </TabsList>
     

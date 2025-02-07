@@ -22,7 +22,7 @@ const OfferCard: React.FC<OfferCardProps> = ({ orgName, offer, inExchangeFor, im
             {/* Render the logo */}
             {image && (
                 <div className="w-24 h-24  border-black rounded-full flex items-center justify-center overflow-hidden">
-                    <Image src={image.src} alt=""/>
+                    <Image src={image.src} width={100} height={100} alt=""/>
                 </div>
             )}
         </div>

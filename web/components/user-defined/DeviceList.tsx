@@ -73,7 +73,7 @@ function DeviceList({ onClose }: DeviceListProps) {
           >
             {/* Device Image */}
             <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
-              <Image src={device.photoUrl} alt={device.name} className="w-full h-full object-contain" />
+              <Image src={device.photoUrl} width={10} height={10} alt={device.name} className="w-full h-full object-contain" />
             </div>
 
             {/* Device Name */}

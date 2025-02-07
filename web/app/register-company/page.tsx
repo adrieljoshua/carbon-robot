@@ -29,7 +29,7 @@ const RegisterCompany = () => {
     const handleSubmitClick = (e: React.FormEvent<HTMLFormElement>) => { 
     e.preventDefault();
     setFormData({ companyName, location });
-    toast({ title: "Company Successfully Registered", description: `Company Name: ${companyName}` });
+    toast({ title: "Company Successfully Registered", description: `Company Name: ${companyName}`});
     router.push("/dashboard");
     };
 
