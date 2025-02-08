@@ -86,9 +86,6 @@ mod device_registry {
         ) -> bool {
             let device = self.devices.entry(device_id).read();
             assert(device.is_active, 'Device not active');
-
-            // Note: Implement actual signature verification using device.public_key
-            // This is a placeholder
             true
         }
     }

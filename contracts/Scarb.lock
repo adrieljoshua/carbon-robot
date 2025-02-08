@@ -2,7 +2,7 @@
 version = 1
 
 [[package]]
-name = "hello_starknet"
+name = "carbonrobots"
 version = "0.1.0"
 dependencies = [
  "snforge_std",
