@@ -3,7 +3,7 @@ import { JSX } from "react";
 import { IconType } from "react-icons";
 
 export interface CompanyProps {
-  id: number;
+  address: string;
   location: string;
   name: string;
   carbonCredits: number;

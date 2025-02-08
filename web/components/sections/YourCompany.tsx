@@ -4,15 +4,23 @@ import React, { useEffect, useState } from "react";
 import Modal from "../user-defined/Modal";
 import { Context } from "@/context/Context";
 import { useContext } from "react";
-import { CheckCircle, PlusIcon, ScanSearchIcon } from "lucide-react";
+import { CheckCircle, CheckCircleIcon, Crown, Key, Keyboard, KeyRound, Link, Pen, PenBox, PlusIcon, ScanSearchIcon, Users, Verified, VerifiedIcon } from "lucide-react";
 import DeviceList from "../user-defined/DeviceList";
 import { Button } from "../ui/button";
 import { CompanyProps, Device } from "@/types/types";
 import EmissionScanTerminal from "./Terminal";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
+import  AuthImage from "../../public/images/nillion-verify.png";
+import Nillion from "../../public/images/nillion-b.png";
+import Loader from '../../components/user-defined/Loader'
+import NeoButton from "../user-defined/NeoButton";
+import { cn } from "@/lib/utils";
+import { Card, CardContent } from "../ui/card";
 
 const YourCompany = () => {
+  const router = useRouter();
   const { formData } = useContext(Context);
   const {  selectedDeviceData } = useContext(Context);
   // const formData = { companyName: "ABC Company", location: "T Nagar, Chennai, India" };  //Comment this line after integrating with the actual data
@@ -22,11 +30,14 @@ const YourCompany = () => {
   const [addDevice, setAddDevice] = useState(false);
   const [configureDevice, setConfigureDevice] = useState(false);
   const [showTerminal, setShowTerminal] = useState(false);
-  const [invalidPrivateKey, setInvalidPrivateKey] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [authSuccess, setAuthSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [publicKey, setPublicKey] = useState("");
   const [privateKey, setPrivateKey] = useState("");
-  const [scanStatus, setScanStatus] = useState("Idle");
-  const router = useRouter();
- 
+  const [invalidCreds, setInvalidCreds] = useState(false);
+    const steps = ["Authenticate", "Create Transaction"];
+
 
   useEffect(() => {
     if (selectedDeviceData) {
@@ -45,37 +56,38 @@ const YourCompany = () => {
     }
   }, [selectedDeviceData]);
 
-  function handlePrivateKeySubmission(value: string): void {
-    if (!selectedDevice) return;
 
-    if (value === "1234") { // Ensure value comparison is correct (string)
-      setCompany((prevCompany) => {
-        if (!prevCompany) return prevCompany; // Ensure prevCompany exists
 
-        return {
-          ...prevCompany,
-          currentActiveDevices: prevCompany.currentActiveDevices.map((device) =>
-            device.id === selectedDevice.id ? { ...device, state: "Configured" } : device
-          ),
-        };
-      });
-      setConfigureDevice(false);
-      setSelectedDevice(null);
-      setInvalidPrivateKey(false);
-      setPrivateKey("");
-    } else {
-      setInvalidPrivateKey(true);
-    }
+  function handleAuthentication() {
+    setLoading(true);
+    setInvalidCreds(false);
+    setTimeout(() => {
+      if (publicKey === "1234" && privateKey === "1234") {
+        setAuthSuccess(true);
+        setInvalidCreds(false);
+        setCurrentStep(1);
+      } else {
+        setInvalidCreds(true);
+      }
+      setLoading(false);
+    }, 3000);
   }
+
+
   
 
   useEffect(() => {
-    if (formData.companyName) {
+    if (formData.address) {
       setCompany((prevCompany) => ({
         ...prevCompany,
+        address: formData.address,
         name: formData.companyName,
         location: formData.location.address,
+        carbonEmissions: formData.carbonEmissions? formData.carbonEmissions: 0,
+        ecoscore: formData.ecoScore ? formData.ecoScore : 0,
+        carbonCredits: formData.credits ? formData.credits : 0,
       }));
+      console.log("Company Duta:", company);
     }
   }, [formData]);
 
@@ -86,15 +98,10 @@ const YourCompany = () => {
 
 
   function startScan(): void {
-    setScanStatus("Scanning");
     setShowTerminal(true);
   }
 
-  useEffect(() => {
-    if (scanStatus === "Scanning") {
-       asyn
-    }
-  }, [scanStatus]);
+
 
   return (
     <div className="w-full font-syne min-h-screen p-10 text-black">
@@ -120,8 +127,10 @@ const YourCompany = () => {
               <span className="text-3xl font-bold text-blue-600">{company.ecoscore}</span>
             </div>
             <div className="text-xl font-semibold">
-              Leaderboard Position:{" "}
-              <span className="text-3xl font-bold text-green-600">{company.rank}</span>
+             
+              Leaderboard Position:{" "} 
+               {company.rank == null ? <span className="text-3xl font-bold text-black">-</span>:
+              <span className="text-3xl font-bold text-green-600">{company.rank}</span>}
             </div>
           </div>
 
@@ -306,18 +315,116 @@ const YourCompany = () => {
           )}
           {configureDevice && (
         <Modal 
-          title="Configure Device" 
+          title="" 
           onClose={() => setConfigureDevice(false)} 
-          className="w-[500px] no-scrollbar overflow-y-auto"
-        >
-          <div className="flex items-center gap-6 no-scrollbar overflow-y-auto">
-            <div className="w-full flex flex-col gap-1 items-center">
-              <input type="text" onChange={(e:React.ChangeEvent<HTMLInputElement>)=>setPrivateKey(e.target.value)} placeholder="Enter device private key to configure" className="w-full border-2 border-gray-300 rounded-sm active:border-gray-300 px-4 py-2"/>
-              {invalidPrivateKey && <p className="text-red-500 text-sm">Authentication failed. Enter valid private key.</p>}
+          className="w-[500px] h-auto no-scrollbar overflow-y-auto bg-white">
+          <div className="max-w-lg mx-auto p-4">
+      {/* Step Progress Bar */}
+      <div className="flex items-center justify-between mb-4">
+        {steps.map((step, index) => (
+          <div key={index} className="flex flex-col items-center">
+            <div
+              className={cn(
+                "w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold transition-all",
+                index <= currentStep
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-300 text-gray-600"
+              )}
+            >
+              {index + 1}
             </div>
-            <Button className="bg-green-600" onClick={() => handlePrivateKeySubmission(privateKey)}>Configure</Button>
+            <span
+              className={cn(
+                "text-sm mt-2 transition-all",
+                index <= currentStep ? "text-black" : "text-gray-400"
+              )}
+            >
+              {step}
+            </span>
           </div>
-        </Modal>
+        ))}
+      </div>
+
+      {/* Step Content */}
+      <Card className="p-6 shadow-lg">
+        <CardContent>
+          {currentStep === 0 ? (
+            <div className="flex flex-col justify-center gap-4 items-center">
+              <h2 className="text-lg mb-1 flex items-center gap-2">
+                AUTHENTICATE DEVICE
+              </h2>
+              <div className="flex flex-col gap-1 w-full">
+              <label>Device ID</label>
+              <input 
+                type="text"
+                value={selectedDevice?.id}
+                placeholder="Enter Device ID"
+                className="w-full border border-gray-300 rounded-md px-4 py-2 cursor-not-allowed bg-gray-100"
+                readOnly
+              />
+              </div>
+              <div className="flex flex-col gap-1 w-full">
+              <div className="flex gap-x-2">
+                <Key className="w-5 h-5" />
+                <label>Enter Device Public Key</label>
+                
+              </div>
+              <input
+                type="text"
+                placeholder=""
+                className="w-full border border-gray-300 rounded-md px-4 py-2"
+                onChange={(e) => setPublicKey(e.target.value)}
+              />
+              </div>
+              <div className="flex flex-col gap-1 w-full">
+                <div className="flex gap-x-2">
+                  <Keyboard className="w-5 h-5" />
+                  <label>Enter Device PIN</label>
+                </div>
+              <input
+                type="text"
+                placeholder=""
+                className="w-full border border-gray-300 rounded-md px-4 py-2"
+                onChange={(e) => setPrivateKey(e.target.value)}
+              />
+              </div>
+              {invalidCreds && (
+                <p className="text-red-500 text-sm">Authentication failed. Incorrect Credentials.</p>
+              )}
+              {loading ? (
+                <div className="flex items-center justify-center">
+                <Loader />
+                </div>
+              ) : (
+                <Button
+                  className="bg-black hover:bg-gray-800 w-full"
+                  onClick={handleAuthentication}
+                  disabled={loading}
+                >
+                  AUTHENTICATE
+                </Button>
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-8">
+              <h2 className="text-lg mb-10 font-archivo font-semibold flex items-center gap-2">
+                 CREATE TRANSACTION
+              </h2>
+              <div className="text-green-500 flex gap-x-2">
+                <CheckCircleIcon className="text-green-500" />
+                Authentication Successful
+              </div>
+              <button
+                className="bg-black text-white px-4 py-2 rounded-lg flex gap-x-2 hover:bg-gray-800"
+                onClick={() => alert("Transaction Written!")}
+              >
+                Write On-Chain Transaction
+              </button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>        </Modal>
           )}  
 
         {/* Start Scan Button */}
@@ -358,12 +465,12 @@ const YourCompany = () => {
 }
 
 
-const CompanyDetails = {
-  id: 1457,
+const CompanyDetails: CompanyProps = {
+  address: "",
   name: "",
   location: "",
   ecoscore: null,
-  carbonCredits: 0,
+  carbonCredits: 0 as number,
   carbonEmissions: null,
   rank: null,
   previousRank: null,
@@ -380,7 +487,7 @@ const CompanyDetails = {
   scanHistory: [
     // Add scan history entries here if needed
   ]
-}
+};
 
 
 export default YourCompany;

@@ -4,8 +4,12 @@ import { createContext, useState, ReactNode } from 'react';
 
 // Define interface for form data
 interface FormData {
-  companyName: string;
-  location: any | null;
+   address: string;
+   companyName: string;
+   location: any | null;
+   ecoScore: number | null;
+    carbonEmissions: number | null;
+    credits: number | null;
 }
 
 // Define interface for the selected device
@@ -25,7 +29,7 @@ interface ContextType {
 
 // Create context with initial values
 export const Context = createContext<ContextType>({
-  formData: { companyName: '', location: null },
+  formData: { address:'', companyName: '', location: null, ecoScore: null, carbonEmissions: null, credits: null },
   setFormData: () => {},
   selectedDeviceData: { name: '', photoUrl: '', id: '' },
   setSelectedDeviceData: () => {},
@@ -38,8 +42,12 @@ interface DataProviderProps {
 
 export function DataProvider({ children }: DataProviderProps) {
   const [formData, setFormData] = useState<FormData>({
+    address: '',
     companyName: '',
     location: null,
+    ecoScore: null,
+    carbonEmissions: null,
+    credits: null
   });
 
   const [selectedDeviceData, setSelectedDeviceData] = useState<DeviceData | null>(null);

@@ -2,8 +2,8 @@ import { CompanyListProps } from "@/types/types";
 
 export const companiesList: CompanyListProps[] = [
   {
-      id: 1,
-      name: "EcoTech Solutions",
+    address: "0x1234567890abcdef",
+    name: "EcoTech Solutions",
       location: "San Francisco, CA",
       carbonCredits: 145,
       rank: 45,
@@ -26,7 +26,7 @@ export const companiesList: CompanyListProps[] = [
       ]
   },
   {
-    id: 2,
+    address: "0xabcdefabcdefabcd",
     name: "Green Innovations Ltd",
     location: "New York, NY",
     carbonCredits: 300,
@@ -50,7 +50,7 @@ export const companiesList: CompanyListProps[] = [
       ]
   },
   {
-    id: 3,
+    address: "0x1234567890abcdef",
     name: "EcoVision Corp",
     location: "Los Angeles, CA",
     carbonCredits: 500,
@@ -82,7 +82,7 @@ export const companiesList: CompanyListProps[] = [
       ]
   },
   {
-    id: 4,
+    address: "0xabcdefabcdefabcd",
     name: "SustainTech Solutions",
     location: "Chicago, IL",
     carbonCredits: 275,
@@ -114,7 +114,7 @@ export const companiesList: CompanyListProps[] = [
       ]
   },
   {
-    id: 5,
+    address: "0xabcdefabcdefabcd",
     name: "FutureTech Innovations",
     location: "Seattle, WA",
     carbonCredits: 320,
@@ -146,7 +146,7 @@ export const companiesList: CompanyListProps[] = [
       ]
   },
   {
-    id: 7,
+    address: "0xabcdefabcdefabcd",
     name: "BlueCarbon Technologies",
     location: "Austin, TX",
     carbonCredits: 280,
@@ -178,7 +178,7 @@ export const companiesList: CompanyListProps[] = [
       ]
   },
   {
-    id: 8,
+    address: "0xabcdefabcdefabcd",
     name: "GreenImpact Solutions",
     location: "Denver, CO",
     carbonCredits: 350,
@@ -210,7 +210,7 @@ export const companiesList: CompanyListProps[] = [
       ]
   },
   {
-    id: 9,
+    address: "0xabcdefabcdefabcd",
     name: "CarbonNet Systems",
     location: "Portland, OR",
     carbonCredits: 270,
@@ -242,7 +242,7 @@ export const companiesList: CompanyListProps[] = [
       ]
   },
   {
-    id: 10,
+    address: "0xabcdefabcdefabcd",
     name: "EcoFuture Enterprises",
     location: "Miami, FL",
     carbonCredits: 400,
@@ -274,7 +274,7 @@ export const companiesList: CompanyListProps[] = [
       ]
   },
   {
-    id: 11,
+    address: "0xabcdefabcdefabcd",
     name: "ClearSky Renewables",
     location: "San Diego, CA",
     carbonCredits: 255,
@@ -306,7 +306,7 @@ export const companiesList: CompanyListProps[] = [
       ]
   },
   {
-    id: 12,
+    address: "0xabcdefabcdefabcd",
     name: "NetZero Technologies",
     location: "Las Vegas, NV",
     carbonCredits: 370,
@@ -338,7 +338,7 @@ export const companiesList: CompanyListProps[] = [
       ]
   },
   {
-    id: 13,
+    address: "0xabcdefabcdefabcd",
     name: "Sustainable Innovations",
     location: "Phoenix, AZ",
     carbonCredits: 290,

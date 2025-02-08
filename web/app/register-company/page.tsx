@@ -9,6 +9,11 @@ import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation";
 import { Context } from "@/context/Context";
 import { CustomLocation } from "@/types/types";
+import { create } from "domain";
+import { createCompany, updateEmissions } from "@/utils/contracts/setters";
+import { strToFelt252 } from "@/utils/contracts/tools";
+import { get } from "http";
+import { getCompanyData } from "@/utils/contracts/getters/company_registry";
 
 const RegisterCompany = () => {
     const [isClient, setIsClient] = useState(false);
@@ -26,12 +31,39 @@ const RegisterCompany = () => {
         return null; // Prevent rendering on the server
     }
     
-    const handleSubmitClick = (e: React.FormEvent<HTMLFormElement>) => { 
-    e.preventDefault();
-    setFormData({ companyName, location });
-    toast({ title: "Company Successfully Registered", description: `Company Name: ${companyName}`});
-    router.push("/dashboard");
-    };
+  const handleSubmitClick = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      
+      if (!companyName || !location) {
+          toast({ title: "Error", description: "Please enter all required fields", variant: "destructive" });
+          return;
+      }
+
+      try {
+          const feltName = strToFelt252(companyName);
+          const feltLocation = strToFelt252(location.address); // Convert to felt252
+
+          const tx = await createCompany(feltName, feltLocation, {low:12, high:30}); // Adjust emissions
+          if(tx){
+              console.log("Transaction created:", tx);
+              console.log(tx.contractAddress);
+              console.log("Company Name:", companyName);
+              console.log("Location:", location);
+              const companyData = await getCompanyData(tx.contractAddress);
+              const formData = { address:tx.contractAddress, companyName:companyName, location:location, ecoScore:companyData.ecoScore, carbonEmissions:companyData.carbonEmissions, credits:companyData.credits };
+              console.log("Company Data:", companyData);
+              toast({ title: "Company Successfully Registered", description: `Company Name: ${companyName}` });
+              setFormData(formData);
+              router.push("/dashboard");
+          }
+          
+
+          
+      } catch (error) {
+          console.error("Error registering company:", error);
+          toast({ title: "Registration Failed", description: "Please try again.", variant: "destructive" });
+      }
+  };
 
 
     return (
