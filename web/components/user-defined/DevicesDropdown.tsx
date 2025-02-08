@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { devicesList } from './DeviceList';
+import { devicesList } from '../../lib/deviceList';
 import Modal from './Modal';
 import Image from 'next/image';
 import { Device } from '@/types/types';

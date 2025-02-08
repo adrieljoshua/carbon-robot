@@ -46,8 +46,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
         throw new Error("No wallet found");
       } else {
         const myWalletAccount = new WalletAccount(
-          { nodeUrl: starknetrpc },
-          starknet
+          { nodeUrl: starknetrpc }, starknet 
         );
         setWalletAccount(myWalletAccount);
         setAddress(myWalletAccount.address);

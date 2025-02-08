@@ -13,8 +13,8 @@ const Companies = () => {
 
   
   // Function to handle company selection
-  const handleViewCompany = (companyId: number) => {
-    setSelectedCompany(companies.find(company => company.id === companyId) || null);
+  const handleViewCompany = (companyId: string) => {
+    setSelectedCompany(companies.find(company => company.address === companyId) || null);
   };
 
   return (
@@ -26,10 +26,10 @@ const Companies = () => {
         <div className="flex flex-wrap justify-center mb-10 gap-x-4 w-full gap-y-6 mt-10">
           {companies.map((company, index) => (
             <CompanyCard
-              key={company.id}
+              key={company.address}
               company={company}
               logo={iconList[index % iconList.length]}
-              onViewCompany={() => handleViewCompany(company.id)} // Pass the company ID to the handler
+              onViewCompany={() => handleViewCompany(company.address)} // Pass the company ID to the handler
             />
           ))}
         </div>

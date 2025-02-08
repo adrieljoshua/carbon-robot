@@ -6,7 +6,7 @@ import YourCompany from "@/components/sections/YourCompany";
 import CreditSale from "@/components/sections/CreditSale";
 import TopBar from "@/components/user-defined/TopBar";
 import SideBar from "@/components/user-defined/SideBar";
-import Verify from "@/components/sections/Verify";``
+import Verify from "@/components/sections/Verify";
 
 const DashBoard = () => {
   

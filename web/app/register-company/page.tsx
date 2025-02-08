@@ -9,10 +9,8 @@ import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation";
 import { Context } from "@/context/Context";
 import { CustomLocation } from "@/types/types";
-import { create } from "domain";
-import { createCompany, updateEmissions } from "@/utils/contracts/setters";
+import { createCompany } from "@/utils/contracts/setters";
 import { strToFelt252 } from "@/utils/contracts/tools";
-import { get } from "http";
 import { getCompanyData } from "@/utils/contracts/getters/company_registry";
 
 const RegisterCompany = () => {

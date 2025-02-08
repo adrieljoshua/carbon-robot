@@ -4,22 +4,19 @@ import React, { useEffect, useState } from "react";
 import Modal from "../user-defined/Modal";
 import { Context } from "@/context/Context";
 import { useContext } from "react";
-import { CheckCircle, CheckCircleIcon, Crown, Key, Keyboard, KeyRound, Link, Pen, PenBox, PlusIcon, ScanSearchIcon, Users, Verified, VerifiedIcon } from "lucide-react";
-import DeviceList, { devicesList } from "../user-defined/DeviceList";
+import { CheckCircleIcon, Key, Keyboard,  Pen,  PlusIcon, ScanSearchIcon } from "lucide-react";
+import { devicesList } from "../../lib/deviceList";
 import { Button } from "../ui/button";
 import { CompanyProps, Device } from "@/types/types";
 import EmissionScanTerminal from "./Terminal";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import  AuthImage from "../../public/images/nillion-verify.png";
 import Nillion from "../../public/images/nillion-b.png";
 import Loader from '../../components/user-defined/Loader'
-import NeoButton from "../user-defined/NeoButton";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "../ui/card";
-import { create } from "domain";
-import { transaction } from "starknet";
+import Starknet from "../../public/images/Starknet.svg";
 
 const YourCompany = () => {
   const router = useRouter();
@@ -32,7 +29,7 @@ const YourCompany = () => {
   const [configureDevice, setConfigureDevice] = useState(false);
   const [showTerminal, setShowTerminal] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-  const [authSuccess, setAuthSuccess] = useState(false);
+  const [ ,setAuthSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [publicKey, setPublicKey] = useState("");
   const [privateKey, setPrivateKey] = useState("");
@@ -100,7 +97,7 @@ const [transactionCompleted, setTransactionCompleted] = useState(false);
       }));
       console.log("Company Duta:", company);
     }
-  }, [formData]);
+  }, [formData,company]);
 
 
   const handleRegisterCompany = () => {
@@ -128,6 +125,8 @@ const [transactionCompleted, setTransactionCompleted] = useState(false);
         currentActiveDevices: [...prev.currentActiveDevices, configuredDevice]
       }));
       setTransactionCompleted(true);
+
+      setSelectedDevice(null);
     }
     setLoading(false);
   }, 3000);
@@ -365,9 +364,14 @@ const [transactionCompleted, setTransactionCompleted] = useState(false);
             </div>
           ) : currentStep === 1 ? (
             <div className="flex flex-col justify-center gap-4 items-center">
+              
               <h2 className="text-lg mb-1 flex items-center gap-2">
                 AUTHENTICATE DEVICE
               </h2>
+              <div className="flex flex-col items-center gap-2 mb-10">
+                <Image src={AuthImage} alt="Nillion" width={150}  />
+                <div className="flex gap-4 items-end"><span className="text-gray-400">Powered by</span><Image src={Nillion} alt="Nillion" width={100}  /></div>
+              </div>
               <div className="flex flex-col gap-1 w-full">
                 <label>Device ID</label>
                 <input 
@@ -406,8 +410,9 @@ const [transactionCompleted, setTransactionCompleted] = useState(false);
                 <p className="text-red-500 text-sm">Authentication failed. Incorrect Credentials.</p>
               )}
               {loading ? (
-                <div className="flex items-center justify-center">
+                <div className="flex flex-col gap-y-4 mt-6 text-center w-56 items-center justify-center">
                   <Loader />
+                  Authenticating Device...
                 </div>
               ) : (
                 <Button
@@ -418,6 +423,7 @@ const [transactionCompleted, setTransactionCompleted] = useState(false);
                   AUTHENTICATE
                 </Button>
               )}
+
             </div>
           ) : (
                       <div className="flex flex-col items-center gap-8">
@@ -429,19 +435,22 @@ const [transactionCompleted, setTransactionCompleted] = useState(false);
               Authentication Successful
             </div>
             {loading ? (
-              <div className="flex items-center justify-center">
+              <div className="flex flex-col items-center gap-y-4 justify-center">
                 <Loader />
+                <span>Writing Transaction...</span>
               </div>
             ) : transactionCompleted ? (
               <div className="text-green-500 flex gap-x-2"><CheckCircleIcon/><span>Transaction Completed Successfully</span></div>
             ) : (
               <button
-                className="bg-black text-white px-4 py-2 rounded-lg flex gap-x-2 hover:bg-gray-800"
+                className="bg-black text-white px-4 py-2 rounded-lg flex gap-x-1 hover:bg-gray-800"
                 onClick={() => createTransaction()}
-              >
-                Write On-Chain Transaction
+              > <Pen size={20} className="mr-2"/>
+                <span>Write On-Chain Transaction</span>
               </button>
             )}
+
+            <div className="flex gap-x-4"><span>Transactions are written on</span><Image src={Starknet} alt="Starknet" width={100}/></div>
           </div>
 
           )}
@@ -481,7 +490,7 @@ const [transactionCompleted, setTransactionCompleted] = useState(false);
       ) : (
         <div className="flex flex-col items-center justify-center gap-6 h-full">
           <h1 className="text-xl mt-20 text-center ">Your Company has not been registered.</h1>
-          <button className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-900" onClick={()=>handleRegisterCompany()}>REGISTER COMPANY</button>
+          <button className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-900" onClick={()=>handleRegisterCompany()}><span>REGISTER COMPANY</span></button>
         </div>
       )}
     </div>
