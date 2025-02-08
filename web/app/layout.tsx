@@ -1,10 +1,12 @@
-import Script from "next/script";  // Import Next.js Script component
+import Script from "next/script"; // Import Next.js Script component
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { archivo, vt323, syne, tacticalSans } from "./styles/fonts";
 import { Toaster } from "@/components/ui/toaster";
-import { DataProvider } from '../context/Context';
+import { DataProvider } from "../context/Context";
+import { Wallet } from "lucide-react";
+import { WalletProvider } from "@/utils/context/WalletContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,14 +40,16 @@ export default function RootLayout({
           crossOrigin=""
         />
       </head>
-      
+
       <body
         className={`${archivo.variable} ${vt323.variable} ${syne.variable} ${tacticalSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <DataProvider>
-          {children}
-          <Toaster />
-        </DataProvider>
+        <WalletProvider>
+          <DataProvider>
+            {children}
+            <Toaster />
+          </DataProvider>
+        </WalletProvider>
 
         {/* Load Leaflet asynchronously with next/script */}
         <Script
