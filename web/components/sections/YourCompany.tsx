@@ -5,7 +5,7 @@ import Modal from "../user-defined/Modal";
 import { Context } from "@/context/Context";
 import { useContext } from "react";
 import { CheckCircle, CheckCircleIcon, Crown, Key, Keyboard, KeyRound, Link, Pen, PenBox, PlusIcon, ScanSearchIcon, Users, Verified, VerifiedIcon } from "lucide-react";
-import DeviceList from "../user-defined/DeviceList";
+import DeviceList, { devicesList } from "../user-defined/DeviceList";
 import { Button } from "../ui/button";
 import { CompanyProps, Device } from "@/types/types";
 import EmissionScanTerminal from "./Terminal";
@@ -18,6 +18,8 @@ import Loader from '../../components/user-defined/Loader'
 import NeoButton from "../user-defined/NeoButton";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "../ui/card";
+import { create } from "domain";
+import { transaction } from "starknet";
 
 const YourCompany = () => {
   const router = useRouter();
@@ -27,7 +29,6 @@ const YourCompany = () => {
   const [company, setCompany] = useState<CompanyProps>(CompanyDetails);
   const [showCreditHistory, setShowCreditHistory] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState<CompanyProps["currentActiveDevices"][number] | null>(null);
-  const [addDevice, setAddDevice] = useState(false);
   const [configureDevice, setConfigureDevice] = useState(false);
   const [showTerminal, setShowTerminal] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -36,7 +37,10 @@ const YourCompany = () => {
   const [publicKey, setPublicKey] = useState("");
   const [privateKey, setPrivateKey] = useState("");
   const [invalidCreds, setInvalidCreds] = useState(false);
-    const steps = ["Authenticate", "Create Transaction"];
+const steps = ["Add Device", "Authenticate", "Create Transaction"];
+const [selectedListDevice, setSelectedListDevice] = useState<Device | null>(null);
+const [transactionCompleted, setTransactionCompleted] = useState(false);
+
 
 
   useEffect(() => {
@@ -56,23 +60,30 @@ const YourCompany = () => {
     }
   }, [selectedDeviceData]);
 
+  const handleDeviceSelect = (device: Device) => {
+    setSelectedListDevice({ ...device, id: crypto.randomUUID() });
+    setSelectedDevice(device);
+  };
+
+  const addDevice = () => {
+    setCurrentStep(1);
+  }
 
 
   function handleAuthentication() {
-    setLoading(true);
-    setInvalidCreds(false);
-    setTimeout(() => {
-      if (publicKey === "1234" && privateKey === "1234") {
-        setAuthSuccess(true);
-        setInvalidCreds(false);
-        setCurrentStep(1);
-      } else {
-        setInvalidCreds(true);
-      }
-      setLoading(false);
-    }, 3000);
-  }
-
+  setLoading(true);
+  setInvalidCreds(false);
+  setTimeout(() => {
+    if (publicKey === "1234" && privateKey === "1234") {
+      setAuthSuccess(true);
+      setInvalidCreds(false);
+      setCurrentStep(2);  // Move to Create Transaction step
+    } else {
+      setInvalidCreds(true);
+    }
+    setLoading(false);
+  }, 3000);
+}
 
   
 
@@ -102,6 +113,25 @@ const YourCompany = () => {
   }
 
 
+
+  function createTransaction(): void {
+    setLoading(true);
+    setTimeout
+    (() => {  
+      if (selectedListDevice) {
+      const configuredDevice = {
+        ...selectedListDevice,
+        state: "Configured"
+      };
+      setCompany(prev => ({
+        ...prev,
+        currentActiveDevices: [...prev.currentActiveDevices, configuredDevice]
+      }));
+      setTransactionCompleted(true);
+    }
+    setLoading(false);
+  }, 3000);
+  }
 
   return (
     <div className="w-full font-syne min-h-screen p-10 text-black">
@@ -193,7 +223,7 @@ const YourCompany = () => {
           </h2>
           <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div 
-                onClick={() => setAddDevice(true)}
+                onClick={() => setConfigureDevice(true)}
                 className="flex cursor-pointer items-center space-x-4 border hover:translate-x-1 hover:translate-y-1 transition-all p-4 rounded-lg shadow-md"
               >
                   <div className="w-full h-full flex items-center p-4 justify-evenly overflow-hidden">
@@ -206,9 +236,8 @@ const YourCompany = () => {
               <div 
                 key={index} 
                 onClick={() => setSelectedDevice(device)} 
-                className={`flex cursor-pointer items-center space-x-4 border transition-all p-4 rounded-lg shadow-md hover:translate-x-1 hover:translate-y-1
-                  ${device.state === "Unconfigured" ? "bg-yellow-200 border-yellow-600 hover:bg-yellow-300" : "bg-green-200 border-green-600 hover:bg-green-300"}
-                `}
+                className="flex cursor-pointer items-center space-x-4 border transition-all p-4 rounded-lg shadow-md hover:translate-x-1 hover:translate-y-1
+                  bg-green-200 border-green-600 hover:bg-green-300"
               >
                 <div className="w-20 h-20 flex items-center justify-center overflow-hidden">
                   <Image 
@@ -257,68 +286,12 @@ const YourCompany = () => {
         </Modal>
           )}
 
-        {addDevice && (
-        <Modal 
-          title="Select Device" 
-          onClose={() => setAddDevice(false)} 
-          className="w-[500px] no-scrollbar overflow-y-auto"
-        >
-          <DeviceList onClose={() => setAddDevice(false)} />
-        </Modal>
-          )}    
-
-          {/* Device Details Modal */}
-          {selectedDevice && (
-            <Modal 
-              title="Device Details" 
-              onClose={() => setSelectedDevice(null)} 
-              className="w-[500px] no-scrollbar overflow-y-auto"
-            >
-              <div className="flex flex-col items-center no-scrollbar overflow-y-auto">
-                <Image
-                width={64}
-                height={64}
-                  src={selectedDevice.photoUrl} 
-                  alt={selectedDevice.name} 
-                  className="w-64 h-64 object-contain border-2 border-gray-200 mb-4" 
-                />
-                <div className="w-full space-y-3">
-                  <div className="grid grid-cols-2 gap-2">
-                    <span className="font-semibold">Device Name:</span>
-                    <span>{selectedDevice.name}</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <span className="font-semibold">Device Model:</span>
-                    <span>{selectedDevice.model}</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <span className="font-semibold">Unique Device ID:</span>
-                    <span>{selectedDevice.id}</span>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <span className="font-semibold">Status</span>
-                    {selectedDevice.state === "Unconfigured" ? (
-                    <div className="flex items-center space-x-4">
-                      <span>{selectedDevice.state}</span>
-                      <Button className="text-xs p-2 bg-gray-950" onClick={()=>setConfigureDevice(true)}>Configure</Button>
-                    </div>):(
-                      <div className="flex items-center space-x-4">
-                      <span>{selectedDevice.state}</span>
-                      <CheckCircle size={20} className="text-green-400"/>
-                    </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </Modal>
-          )}
-          {configureDevice && (
-        <Modal 
-          title="" 
-          onClose={() => setConfigureDevice(false)} 
-          className="w-[500px] h-auto no-scrollbar overflow-y-auto bg-white">
-          <div className="max-w-lg mx-auto p-4">
+        {configureDevice && (
+  <Modal 
+    title="" 
+    onClose={() => setConfigureDevice(false)} 
+    className="w-[500px] h-auto no-scrollbar overflow-y-auto bg-white">
+    <div className="max-w-lg mx-auto p-4">
       {/* Step Progress Bar */}
       <div className="flex items-center justify-between mb-4">
         {steps.map((step, index) => (
@@ -351,49 +324,90 @@ const YourCompany = () => {
           {currentStep === 0 ? (
             <div className="flex flex-col justify-center gap-4 items-center">
               <h2 className="text-lg mb-1 flex items-center gap-2">
+                SELECT DEVICE
+              </h2>
+               <div className="flex flex-col font-syne items-center w-full">
+                    <div className="gap-6 w-full mb-6">
+                      {devicesList.map((device) => (
+                        <div 
+                          key={device.model} 
+                          onClick={() => handleDeviceSelect(device)}
+                          className={`flex cursor-pointer justify-between items-center gap-x-9 border hover:translate-x-1 hover:translate-y-1 transition-all p-4 rounded-lg shadow-md mb-4 
+                           ${selectedDevice?.model === device.model ? "border-4 border-black" : "border"} 
+                            hover:translate-x-1 hover:translate-y-1 transition-all`}
+                        >
+                          {/* Device Image */}
+                          <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
+                            <Image src={device.photoUrl} width={10} height={10} alt={device.name} className="w-full h-full object-contain" />
+                          </div>
+              
+                          {/* Device Name */}
+                          <h3 className="text-lg text-wrap font-medium text-gray-800">{device.name}</h3>
+                        </div>
+                      ))}
+                    </div>
+              
+                    {/* Selected Device Details */}
+                    {selectedDevice && (
+                      <div className="w-full mb-6 p-4 bg-gray-50 rounded-lg">
+                        <h4 className="text-lg font-semibold mb-2">Selected Device Details:</h4>
+                        <p><span className="font-medium">Name:</span> {selectedDevice.name}</p>
+                        <p><span className="font-medium">Device Model:</span> {selectedDevice.model}</p>
+                      </div>
+                    )}
+
+                    <Button
+                  className="bg-black hover:bg-gray-800 w-full"
+                  onClick={() => addDevice()}
+              >ADD DEVICE</Button>
+                  </div>
+              
+            </div>
+          ) : currentStep === 1 ? (
+            <div className="flex flex-col justify-center gap-4 items-center">
+              <h2 className="text-lg mb-1 flex items-center gap-2">
                 AUTHENTICATE DEVICE
               </h2>
               <div className="flex flex-col gap-1 w-full">
-              <label>Device ID</label>
-              <input 
-                type="text"
-                value={selectedDevice?.id}
-                placeholder="Enter Device ID"
-                className="w-full border border-gray-300 rounded-md px-4 py-2 cursor-not-allowed bg-gray-100"
-                readOnly
-              />
+                <label>Device ID</label>
+                <input 
+                  type="text"
+                  value={selectedListDevice?.id}
+                  placeholder="Enter Device ID"
+                  className="w-full border border-gray-300 rounded-md px-4 py-2 cursor-not-allowed bg-gray-100"
+                  readOnly
+                />
               </div>
               <div className="flex flex-col gap-1 w-full">
-              <div className="flex gap-x-2">
-                <Key className="w-5 h-5" />
-                <label>Enter Device Public Key</label>
-                
-              </div>
-              <input
-                type="text"
-                placeholder=""
-                className="w-full border border-gray-300 rounded-md px-4 py-2"
-                onChange={(e) => setPublicKey(e.target.value)}
-              />
+                <div className="flex gap-x-2">
+                  <Key className="w-5 h-5" />
+                  <label>Enter Device Public Key</label>
+                </div>
+                <input
+                  type="text"
+                  placeholder=""
+                  className="w-full border border-gray-300 rounded-md px-4 py-2"
+                  onChange={(e) => setPublicKey(e.target.value)}
+                />
               </div>
               <div className="flex flex-col gap-1 w-full">
                 <div className="flex gap-x-2">
                   <Keyboard className="w-5 h-5" />
                   <label>Enter Device PIN</label>
                 </div>
-              <input
-                type="text"
-                placeholder=""
-                className="w-full border border-gray-300 rounded-md px-4 py-2"
-                onChange={(e) => setPrivateKey(e.target.value)}
-              />
+                <input
+                  type="text"
+                  placeholder=""
+                  className="w-full border border-gray-300 rounded-md px-4 py-2"
+                  onChange={(e) => setPrivateKey(e.target.value)}
+                />
               </div>
               {invalidCreds && (
                 <p className="text-red-500 text-sm">Authentication failed. Incorrect Credentials.</p>
               )}
               {loading ? (
                 <div className="flex items-center justify-center">
-                <Loader />
+                  <Loader />
                 </div>
               ) : (
                 <Button
@@ -406,26 +420,36 @@ const YourCompany = () => {
               )}
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-8">
-              <h2 className="text-lg mb-10 font-archivo font-semibold flex items-center gap-2">
-                 CREATE TRANSACTION
-              </h2>
-              <div className="text-green-500 flex gap-x-2">
-                <CheckCircleIcon className="text-green-500" />
-                Authentication Successful
+                      <div className="flex flex-col items-center gap-8">
+            <h2 className="text-lg mb-10 font-archivo font-semibold flex items-center gap-2">
+              CREATE TRANSACTION
+            </h2>
+            <div className="text-green-500 flex gap-x-2">
+              <CheckCircleIcon className="text-green-500" />
+              Authentication Successful
+            </div>
+            {loading ? (
+              <div className="flex items-center justify-center">
+                <Loader />
               </div>
+            ) : transactionCompleted ? (
+              <div className="text-green-500 flex gap-x-2"><CheckCircleIcon/><span>Transaction Completed Successfully</span></div>
+            ) : (
               <button
                 className="bg-black text-white px-4 py-2 rounded-lg flex gap-x-2 hover:bg-gray-800"
-                onClick={() => alert("Transaction Written!")}
+                onClick={() => createTransaction()}
               >
                 Write On-Chain Transaction
               </button>
-            </div>
+            )}
+          </div>
+
           )}
         </CardContent>
       </Card>
-    </div>        </Modal>
-          )}  
+    </div>
+  </Modal>
+)}
 
         {/* Start Scan Button */}
           {company.currentActiveDevices.some(device => device.state === "Configured") && (

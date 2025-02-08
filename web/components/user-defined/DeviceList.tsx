@@ -90,16 +90,6 @@ function DeviceList({ onClose }: DeviceListProps) {
           <p><span className="font-medium">Device Model:</span> {selectedDevice.model}</p>
         </div>
       )}
-
-      {/* Add Device Button */}
-      {selectedDevice && (
-        <button
-          onClick={handleAddDevice}
-          className="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-black/80 transition-colors"
-        >
-          Add Device
-        </button>
-      )}
     </div>
   );
 }
