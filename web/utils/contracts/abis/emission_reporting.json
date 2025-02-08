@@ -1,0 +1,203 @@
+[
+  {
+    "type": "impl",
+    "name": "EmissionReportingImpl",
+    "interface_name": "carbonrobots::emission_reporting::emission_reporting::IEmissionReporting"
+  },
+  {
+    "type": "struct",
+    "name": "core::integer::u256",
+    "members": [
+      {
+        "name": "low",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "high",
+        "type": "core::integer::u128"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "carbonrobots::emission_reporting::emission_reporting::EmissionReport",
+    "members": [
+      {
+        "name": "device_id",
+        "type": "core::felt252"
+      },
+      {
+        "name": "timestamp",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "emissions",
+        "type": "core::integer::u256"
+      },
+      {
+        "name": "location",
+        "type": "core::felt252"
+      },
+      {
+        "name": "signature",
+        "type": "core::felt252"
+      }
+    ]
+  },
+  {
+    "type": "interface",
+    "name": "carbonrobots::emission_reporting::emission_reporting::IEmissionReporting",
+    "items": [
+      {
+        "type": "function",
+        "name": "submit_report",
+        "inputs": [
+          {
+            "name": "device_id",
+            "type": "core::felt252"
+          },
+          {
+            "name": "emissions",
+            "type": "core::integer::u256"
+          },
+          {
+            "name": "location",
+            "type": "core::felt252"
+          },
+          {
+            "name": "signature",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "get_latest_report",
+        "inputs": [
+          {
+            "name": "company",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "carbonrobots::emission_reporting::emission_reporting::EmissionReport"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "update_flight_path",
+        "inputs": [
+          {
+            "name": "device_id",
+            "type": "core::felt252"
+          },
+          {
+            "name": "new_path",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "get_flight_path",
+        "inputs": [
+          {
+            "name": "device_id",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::felt252"
+          }
+        ],
+        "state_mutability": "view"
+      }
+    ]
+  },
+  {
+    "type": "constructor",
+    "name": "constructor",
+    "inputs": [
+      {
+        "name": "admin",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "device_registry",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "company_registry",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "carbon_token",
+        "type": "core::starknet::contract_address::ContractAddress"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "carbonrobots::emission_reporting::emission_reporting::EmissionReported",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "company",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      },
+      {
+        "name": "device_id",
+        "type": "core::felt252",
+        "kind": "data"
+      },
+      {
+        "name": "emissions",
+        "type": "core::integer::u256",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "carbonrobots::emission_reporting::emission_reporting::FlightPathUpdated",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "device_id",
+        "type": "core::felt252",
+        "kind": "data"
+      },
+      {
+        "name": "path",
+        "type": "core::felt252",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "carbonrobots::emission_reporting::emission_reporting::Event",
+    "kind": "enum",
+    "variants": [
+      {
+        "name": "EmissionReported",
+        "type": "carbonrobots::emission_reporting::emission_reporting::EmissionReported",
+        "kind": "nested"
+      },
+      {
+        "name": "FlightPathUpdated",
+        "type": "carbonrobots::emission_reporting::emission_reporting::FlightPathUpdated",
+        "kind": "nested"
+      }
+    ]
+  }
+]

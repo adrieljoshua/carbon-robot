@@ -24,6 +24,7 @@ const YourCompany = () => {
   const [showTerminal, setShowTerminal] = useState(false);
   const [invalidPrivateKey, setInvalidPrivateKey] = useState(false);
   const [privateKey, setPrivateKey] = useState("");
+  const [scanStatus, setScanStatus] = useState("Idle");
   const router = useRouter();
  
 
@@ -83,6 +84,17 @@ const YourCompany = () => {
         router.push("/register-company");
     }
 
+
+  function startScan(): void {
+    setScanStatus("Scanning");
+    setShowTerminal(true);
+  }
+
+  useEffect(() => {
+    if (scanStatus === "Scanning") {
+       asyn
+    }
+  }, [scanStatus]);
 
   return (
     <div className="w-full font-syne min-h-screen p-10 text-black">
@@ -311,7 +323,7 @@ const YourCompany = () => {
         {/* Start Scan Button */}
           {company.currentActiveDevices.some(device => device.state === "Configured") && (
             <div className="flex justify-center mt-10">
-              <Button className="bg-black text-white" onClick={() => setShowTerminal(true)}>
+              <Button className="bg-black text-white" onClick={() => startScan()}>
                 <ScanSearchIcon size={20} className="mr-2"/>
                 <span>START CARBON EMISSION SCAN</span>
               </Button>

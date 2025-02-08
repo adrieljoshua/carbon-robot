@@ -1,0 +1,185 @@
+[
+  {
+    "type": "impl",
+    "name": "DeviceRegistryImpl",
+    "interface_name": "carbonrobots::device_registry::device_registry::IDeviceRegistry"
+  },
+  {
+    "type": "enum",
+    "name": "core::bool",
+    "variants": [
+      {
+        "name": "False",
+        "type": "()"
+      },
+      {
+        "name": "True",
+        "type": "()"
+      }
+    ]
+  },
+  {
+    "type": "struct",
+    "name": "carbonrobots::device_registry::device_registry::DeviceData",
+    "members": [
+      {
+        "name": "owner",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "public_key",
+        "type": "core::felt252"
+      },
+      {
+        "name": "is_active",
+        "type": "core::bool"
+      }
+    ]
+  },
+  {
+    "type": "interface",
+    "name": "carbonrobots::device_registry::device_registry::IDeviceRegistry",
+    "items": [
+      {
+        "type": "function",
+        "name": "register_device",
+        "inputs": [
+          {
+            "name": "device_id",
+            "type": "core::felt252"
+          },
+          {
+            "name": "public_key",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "deactivate_device",
+        "inputs": [
+          {
+            "name": "device_id",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
+        "name": "is_device_active",
+        "inputs": [
+          {
+            "name": "device_id",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::bool"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "get_device_data",
+        "inputs": [
+          {
+            "name": "device_id",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "carbonrobots::device_registry::device_registry::DeviceData"
+          }
+        ],
+        "state_mutability": "view"
+      },
+      {
+        "type": "function",
+        "name": "verify_device_signature",
+        "inputs": [
+          {
+            "name": "device_id",
+            "type": "core::felt252"
+          },
+          {
+            "name": "message",
+            "type": "core::felt252"
+          },
+          {
+            "name": "signature",
+            "type": "core::felt252"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::bool"
+          }
+        ],
+        "state_mutability": "view"
+      }
+    ]
+  },
+  {
+    "type": "constructor",
+    "name": "constructor",
+    "inputs": [
+      {
+        "name": "company_registry",
+        "type": "core::starknet::contract_address::ContractAddress"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "carbonrobots::device_registry::device_registry::DeviceRegistered",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "device_id",
+        "type": "core::felt252",
+        "kind": "data"
+      },
+      {
+        "name": "owner",
+        "type": "core::starknet::contract_address::ContractAddress",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "carbonrobots::device_registry::device_registry::DeviceDeactivated",
+    "kind": "struct",
+    "members": [
+      {
+        "name": "device_id",
+        "type": "core::felt252",
+        "kind": "data"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "carbonrobots::device_registry::device_registry::Event",
+    "kind": "enum",
+    "variants": [
+      {
+        "name": "DeviceRegistered",
+        "type": "carbonrobots::device_registry::device_registry::DeviceRegistered",
+        "kind": "nested"
+      },
+      {
+        "name": "DeviceDeactivated",
+        "type": "carbonrobots::device_registry::device_registry::DeviceDeactivated",
+        "kind": "nested"
+      }
+    ]
+  }
+]
