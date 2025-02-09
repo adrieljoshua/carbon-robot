@@ -188,7 +188,10 @@ const YourCompany = () => {
       }
 
       setLoading(true);
-      const tx = await registerDevice(selectedListDevice.id, publicKey);
+      const tx = await registerDevice(
+        selectedListDevice.id.slice(0, 5),
+        publicKey
+      );
       console.log("Register device transaction:", tx);
 
       if (!walletAccount) {
@@ -198,7 +201,18 @@ const YourCompany = () => {
       const response = await walletAccount.execute(tx);
       console.log("Transaction response:", response);
 
+      const configuredDevice = {
+        ...selectedListDevice,
+        state: "Configured",
+      };
+
+      setCompany((prev) => ({
+        ...prev,
+        currentActiveDevices: [...prev.currentActiveDevices, configuredDevice],
+      }));
+
       setCurrentStep(2);
+      setConfigureDevice(false); // Close the modal
       toast({
         title: "Registration Complete",
         description: "Device has been successfully registered on-chain",
@@ -215,7 +229,6 @@ const YourCompany = () => {
       setLoading(false);
     }
   };
-
   const handleRegisterCompany = () => {
     router.push("/register-company");
   };
@@ -281,7 +294,7 @@ const YourCompany = () => {
 
   return (
     <div className="w-full font-syne min-h-screen p-10 text-black">
-      {company.name ? (
+      {company.name != company.location ? (
         <>
           <h1 className="text-4xl font-bold mb-2 tracking-wide">
             {company.name}
