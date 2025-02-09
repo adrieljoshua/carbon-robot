@@ -1,5 +1,11 @@
 "use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import { connect, StarknetWindowObject } from "get-starknet";
 import { WalletAccount } from "starknet";
 import { starknetrpc } from "../contracts/deployments";
@@ -35,36 +41,108 @@ export function WalletProvider({ children }: WalletProviderProps) {
   const [walletAccount, setWalletAccount] = useState<WalletAccount | null>(
     null
   );
+
+  // Handle account changes
+  const handleAccountsChanged = (accounts: string[] | undefined) => {
+    if (accounts?.length) {
+      setAddress(accounts[0]);
+      console.log("Account changed:", accounts[0]);
+    } else {
+      setAddress("");
+      setIsConnected(false);
+    }
+  };
+
+  // Handle network changes
+  const handleNetworkChanged = (chainId?: string, accounts?: string[]) => {
+    if (provider) {
+      const myWalletAccount = new WalletAccount(
+        { nodeUrl: starknetrpc },
+        provider
+      );
+      setWalletAccount(myWalletAccount);
+      if (accounts?.length) {
+        setAddress(accounts[0]);
+        console.log("Network changed:", accounts[0]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (provider) {
+      provider.on("accountsChanged", handleAccountsChanged);
+      provider.on("networkChanged", handleNetworkChanged);
+
+      // Initial account setup
+      const getInitialAccount = async () => {
+        try {
+          const accounts = await provider.request({
+            type: "wallet_requestAccounts",
+          });
+          if (Array.isArray(accounts) && accounts.length > 0) {
+            setAddress(accounts[0]);
+            console.log("Account changed:", accounts[0]);
+
+            setIsConnected(true);
+          }
+        } catch (error) {
+          console.error("Error getting initial account:", error);
+        }
+      };
+
+      getInitialAccount();
+
+      return () => {
+        provider.off("accountsChanged", handleAccountsChanged);
+        provider.off("networkChanged", handleNetworkChanged);
+      };
+    }
+  }, [provider]);
+
   const connectWallet = async () => {
     try {
       const starknet = await connect({
         modalMode: "alwaysAsk",
         modalTheme: "dark",
       });
-      console.log(starknet);
+
       if (!starknet) {
         throw new Error("No wallet found");
-      } else {
-        const myWalletAccount = new WalletAccount(
-          { nodeUrl: starknetrpc },
-          starknet
-        );
-        setWalletAccount(myWalletAccount);
-        setAddress(myWalletAccount.address);
-        setProvider(starknet);
+      }
+
+      // Request account access
+      const accounts = await starknet.request({
+        type: "wallet_requestAccounts",
+      });
+
+      const myWalletAccount = new WalletAccount(
+        { nodeUrl: starknetrpc },
+        starknet
+      );
+
+      setWalletAccount(myWalletAccount);
+      setProvider(starknet);
+
+      if (Array.isArray(accounts) && accounts.length > 0) {
+        setAddress(accounts[0]);
         setIsConnected(true);
       }
     } catch (error) {
       if (error instanceof Error) {
-        alert(error.message);
+        console.error("Wallet connection error:", error.message);
       } else {
-        alert("An unknown error occurred");
+        console.error("An unknown error occurred while connecting wallet");
       }
     }
   };
 
   const disconnectWallet = () => {
+    if (provider) {
+      provider.off("accountsChanged", handleAccountsChanged);
+      provider.off("networkChanged", handleNetworkChanged);
+    }
     setProvider(null);
+    setWalletAccount(null);
     setAddress("");
     setIsConnected(false);
   };
