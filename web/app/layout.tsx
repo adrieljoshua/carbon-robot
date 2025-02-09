@@ -5,7 +5,6 @@ import "./globals.css";
 import { archivo, vt323, syne, tacticalSans } from "./styles/fonts";
 import { Toaster } from "@/components/ui/toaster";
 import { DataProvider } from "../context/Context";
-import { Wallet } from "lucide-react";
 import { WalletProvider } from "@/utils/context/WalletContext";
 
 const geistSans = Geist({

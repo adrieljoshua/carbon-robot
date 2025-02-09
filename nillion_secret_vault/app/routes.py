@@ -1,6 +1,5 @@
 import json
 from fastapi import APIRouter, HTTPException
-from .models import DeviceVerification, EmissionData
 from .nildbapi import NilDBAPI
 from .secret_vault_storage import PrivateKeyStorage
 from pydantic import BaseModel
@@ -15,6 +14,10 @@ class KeyRetrievalRequest(BaseModel):
     node_name: str
     public_key: str
     schema: str
+
+class DeviceVerification(BaseModel):
+    public_key: str
+    pin: str
 
 class KeyPairRequest(BaseModel):
     node_name: str
@@ -82,22 +85,19 @@ async def get_private_key(request: KeyRetrievalRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error retrieving private key: {str(e)}")
 
-@router.post("/register-device")
-async def register_device(device: DeviceVerification):
+@router.post("/validate-device")
+async def validate_device(device: DeviceVerification):
     """
     Register a device with its UUID, public key, and encrypted private key.
     """
     try:
-        device_data = {
-            "uuid": device.uuid,
-            "public_key": device.public_key,
-            "encrypted_private_key": device.encrypted_private_key,
-            "pin": device.pin
-        }
-        nildb.data_upload(f"device_{device.uuid}", device_data)
-        return {"message": "Device registered successfully"}
+        private_key = storage.get_private_key("node_a", device.public_key, "3cf2eedb-f74a-42df-85d9-561c7b321a1e")
+        if private_key[-4:]==device.pin:
+            return {"verification": True}
+        else:
+            return {"verification": False}
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        return {"verification": False}
 
 @router.get("/get-device/{uuid}")
 async def get_device(uuid: str):

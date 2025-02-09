@@ -1,10 +1,6 @@
 from pydantic import BaseModel, UUID4
 from datetime import datetime
 
-class DeviceVerification(BaseModel):
-    uuid: UUID4
-    public_key: str
-    pin: str
 
 class EmissionData(BaseModel):
     lidar_data: str
