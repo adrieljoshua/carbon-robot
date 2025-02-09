@@ -16,8 +16,7 @@ export interface CompanyProps {
   currentActiveDevices: Device[];
 }
 
-export interface CompanyListProps extends CompanyProps {
-}
+export interface CompanyListProps extends CompanyProps {}
 
 export interface ScanReport {
   hash: string;
@@ -35,18 +34,17 @@ export interface Device {
 }
 
 export interface CreditTransaction {
-  hash : string;
+  hash: string;
   date: string;
   amount: string;
   type: string;
   otherParty: string;
 }
 
-
 export interface CompanyCardProps {
-  company: CompanyProps;  // This is the prop for the company details
-  logo: IconType;  // This is the prop for the logo icon
-  onViewCompany: ()=>void// This is the prop for the view company function
+  company: CompanyProps; // This is the prop for the company details
+  logo: IconType; // This is the prop for the logo icon
+  onViewCompany: () => void; // This is the prop for the view company function
 }
 
 export interface DisplayCompanyProps {
